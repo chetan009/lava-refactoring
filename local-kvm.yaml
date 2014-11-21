@@ -12,7 +12,7 @@ actions:
     - deploy:
         timeout: 20m
         to: tmpfs
-        image: http://localhost/static/images/kvm-debian-wheezy7.5.img.gz
+        image: http://images.validation.linaro.org/kvm/kvm-debian-wheezy.img.gz
         compression: gz
         os: debian
         # if root_partition partition is not present:
