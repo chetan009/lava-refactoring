@@ -19,12 +19,9 @@
 # has changed but the current code does not look into paths in /etc/, only
 # /usr/lib/python2.7/dist-packages/
 
-START=1416310894
+DATE=`date +"%Y.%m.%d.%H.%M"`
 
-DATE=`date +%s`
-
-ID=`expr $DATE - $START`
-OUTPUT="/tmp/kvm-$ID"
+OUTPUT="/tmp/kvm-$DATE"
 mkdir $OUTPUT
 sudo touch $OUTPUT/console.log
 sudo chmod 666 $OUTPUT/console.log
@@ -34,11 +31,11 @@ rsync -az $OUTPUT ..
 #panda
 
 if [ -f "/usr/lib/python2.7/dist-packages/lava_dispatcher/pipeline/devices/panda-es-01.conf" ]; then
-	DATE=`date +%s`
-	ID=`expr $DATE - $START`
-	OUTPUT="/tmp/panda-ramdisk-$ID"
+	DATE=`date +"%Y.%m.%d.%H.%M"`
+	OUTPUT="/tmp/panda-ramdisk-$DATE"
 	mkdir $OUTPUT
 	sudo touch $OUTPUT/console.log
+	sudo chmod 666 $OUTPUT/console.log
 	sudo cp ./panda-es-01.conf /usr/lib/python2.7/dist-packages/lava_dispatcher/pipeline/devices/
 	sudo lava-dispatch --target panda-01 ./panda-ramdisk.yaml --output-dir=$OUTPUT | tee $OUTPUT/console.log
 	rsync -az $OUTPUT ..
@@ -47,9 +44,8 @@ fi
 # bbb
 
 if [ -f "/usr/lib/python2.7/dist-packages/lava_dispatcher/pipeline/devices/bbb-01.conf" ]; then
-	DATE=`date +%s`
-	ID=`expr $DATE - $START`
-	OUTPUT="/tmp/bbb-ramdisk-$ID"
+	DATE=`date +"%Y.%m.%d.%H.%M"`
+	OUTPUT="/tmp/bbb-ramdisk-$DATE"
 	mkdir $OUTPUT
 	sudo touch $OUTPUT/console.log
 	sudo chmod 666 $OUTPUT/console.log
@@ -57,9 +53,8 @@ if [ -f "/usr/lib/python2.7/dist-packages/lava_dispatcher/pipeline/devices/bbb-0
 	sudo lava-dispatch --target bbb-01 ./local-uboot-ramdisk.yaml --output-dir=$OUTPUT | tee $OUTPUT/console.log
 	rsync -az $OUTPUT ..
 
-	DATE=`date +%s`
-	ID=`expr $DATE - $START`
-	OUTPUT="/tmp/bbb-nfs-$ID"
+	DATE=`date +"%Y.%m.%d.%H.%M"`
+	OUTPUT="/tmp/bbb-nfs-$DATE"
 	mkdir $OUTPUT
 	sudo touch $OUTPUT/console.log
 	sudo chmod 666 $OUTPUT/console.log
