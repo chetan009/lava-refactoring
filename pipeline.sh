@@ -33,37 +33,37 @@ rsync -az $OUTPUT ..
 
 #panda
 
-DATE=`date +%s`
-ID=`expr $DATE - $START`
-OUTPUT="/tmp/panda-ramdisk-$ID"
-mkdir $OUTPUT
-sudo touch $OUTPUT/console.log
-if [ ! -f "/usr/lib/python2.7/dist-packages/lava_dispatcher/pipeline/devices/panda-01.conf" ]; then
-	sudo cp ./panda-01.conf /usr/lib/python2.7/dist-packages/lava_dispatcher/pipeline/devices/
-fi
-sudo lava-dispatch --target panda-01 ./panda-ramdisk.yaml --output-dir=$OUTPUT | tee $OUTPUT/console.log
-rsync -az $OUTPUT ..
-if [ -f "/usr/lib/python2.7/dist-packages/lava_dispatcher/pipeline/devices/panda-01.conf" ]; then
-	sudo rm /usr/lib/python2.7/dist-packages/lava_dispatcher/pipeline/devices/panda-01.conf
+if [ -f "/usr/lib/python2.7/dist-packages/lava_dispatcher/pipeline/devices/panda-es-01.conf" ]; then
+	DATE=`date +%s`
+	ID=`expr $DATE - $START`
+	OUTPUT="/tmp/panda-ramdisk-$ID"
+	mkdir $OUTPUT
+	sudo touch $OUTPUT/console.log
+	sudo cp ./panda-es-01.conf /usr/lib/python2.7/dist-packages/lava_dispatcher/pipeline/devices/
+	sudo lava-dispatch --target panda-01 ./panda-ramdisk.yaml --output-dir=$OUTPUT | tee $OUTPUT/console.log
+	rsync -az $OUTPUT ..
 fi
 
-# beaglebone blacks not available yet.
-exit 0
+# bbb
 
-DATE=`date +%s`
-ID=`expr $DATE - $START`
-OUTPUT="/tmp/bbb-ramdisk-$ID"
-mkdir $OUTPUT
-sudo touch $OUTPUT/console.log
-sudo chmod 666 $OUTPUT/console.log
-sudo lava-dispatch --target bbb-01 ./local-uboot-ramdisk.yaml --output-dir=$OUTPUT | tee $OUTPUT/console.log
-rsync -az $OUTPUT ..
+if [ -f "/usr/lib/python2.7/dist-packages/lava_dispatcher/pipeline/devices/bbb-01.conf" ]; then
+	DATE=`date +%s`
+	ID=`expr $DATE - $START`
+	OUTPUT="/tmp/bbb-ramdisk-$ID"
+	mkdir $OUTPUT
+	sudo touch $OUTPUT/console.log
+	sudo chmod 666 $OUTPUT/console.log
+	sudo cp ./bbb-01.conf /usr/lib/python2.7/dist-packages/lava_dispatcher/pipeline/devices/
+	sudo lava-dispatch --target bbb-01 ./local-uboot-ramdisk.yaml --output-dir=$OUTPUT | tee $OUTPUT/console.log
+	rsync -az $OUTPUT ..
 
-DATE=`date +%s`
-ID=`expr $DATE - $START`
-OUTPUT="/tmp/bbb-nfs-$ID"
-mkdir $OUTPUT
-sudo touch $OUTPUT/console.log
-sudo chmod 666 $OUTPUT/console.log
-sudo lava-dispatch --target bbb-01 ./local-uboot-pipeline.yaml --output-dir=$OUTPUT | tee $OUTPUT/console.log
-rsync -az $OUTPUT ..
+	DATE=`date +%s`
+	ID=`expr $DATE - $START`
+	OUTPUT="/tmp/bbb-nfs-$ID"
+	mkdir $OUTPUT
+	sudo touch $OUTPUT/console.log
+	sudo chmod 666 $OUTPUT/console.log
+	sudo cp ./bbb-01.conf /usr/lib/python2.7/dist-packages/lava_dispatcher/pipeline/devices/
+	sudo lava-dispatch --target bbb-01 ./local-uboot-pipeline.yaml --output-dir=$OUTPUT | tee $OUTPUT/console.log
+	rsync -az $OUTPUT ..
+fi
