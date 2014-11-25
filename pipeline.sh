@@ -37,7 +37,7 @@ if [ -f "/usr/lib/python2.7/dist-packages/lava_dispatcher/pipeline/devices/panda
 	sudo touch $OUTPUT/console.log
 	sudo chmod 666 $OUTPUT/console.log
 	sudo cp ./panda-es-01.conf /usr/lib/python2.7/dist-packages/lava_dispatcher/pipeline/devices/
-	sudo lava-dispatch --target panda-01 ./panda-ramdisk.yaml --output-dir=$OUTPUT | tee $OUTPUT/console.log
+	sudo lava-dispatch --target panda-es-01 ./panda-ramdisk.yaml --output-dir=$OUTPUT | tee $OUTPUT/console.log
 	rsync -az $OUTPUT ..
 fi
 
