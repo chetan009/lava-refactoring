@@ -64,6 +64,6 @@ if [ -f "/usr/lib/python2.7/dist-packages/lava_dispatcher/pipeline/devices/bbb-0
 	sudo touch $OUTPUT/console.log
 	sudo chmod 666 $OUTPUT/console.log
 	sudo cp ./bbb-01.conf /usr/lib/python2.7/dist-packages/lava_dispatcher/pipeline/devices/
-	sudo lava-dispatch --target bbb-01 ./local-uboot-pipeline.yaml --output-dir=$OUTPUT | tee $OUTPUT/console.log
+	sudo lava-dispatch --target bbb-01 ./bbb-uboot-nfs.yaml --output-dir=$OUTPUT | tee $OUTPUT/console.log
 	rsync -az $OUTPUT ..
 fi
