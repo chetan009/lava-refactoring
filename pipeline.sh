@@ -30,13 +30,14 @@ rsync -az $OUTPUT ..
 
 #panda
 
+# remove workaround once https://review.linaro.org/#/c/3766/ is merged
 if [ -f "/usr/lib/python2.7/dist-packages/lava_dispatcher/pipeline/devices/panda-es-01.conf" ]; then
 	DATE=`date +"%Y.%m.%d.%H.%M"`
 	OUTPUT="/tmp/panda-ramdisk-$DATE"
 	mkdir $OUTPUT
 	sudo touch $OUTPUT/console.log
 	sudo chmod 666 $OUTPUT/console.log
-	sudo cp ./panda-es-01.conf /usr/lib/python2.7/dist-packages/lava_dispatcher/pipeline/devices/
+	sudo cp ./devices/panda-es-01.conf /usr/lib/python2.7/dist-packages/lava_dispatcher/pipeline/devices/
 	sudo lava-dispatch --target panda-es-01 ./panda-ramdisk.yaml --output-dir=$OUTPUT | tee $OUTPUT/console.log
 	rsync -az $OUTPUT ..
 fi
@@ -49,7 +50,7 @@ if [ -f "/usr/lib/python2.7/dist-packages/lava_dispatcher/pipeline/devices/bbb-0
 	mkdir $OUTPUT
 	sudo touch $OUTPUT/console.log
 	sudo chmod 666 $OUTPUT/console.log
-	sudo cp ./bbb-01.conf /usr/lib/python2.7/dist-packages/lava_dispatcher/pipeline/devices/
+	sudo cp ./devices/bbb-01.conf /usr/lib/python2.7/dist-packages/lava_dispatcher/pipeline/devices/
 	sudo lava-dispatch --target bbb-01 ./local-uboot-ramdisk.yaml --output-dir=$OUTPUT | tee $OUTPUT/console.log
 	rsync -az $OUTPUT ..
 
@@ -58,7 +59,7 @@ if [ -f "/usr/lib/python2.7/dist-packages/lava_dispatcher/pipeline/devices/bbb-0
 	mkdir $OUTPUT
 	sudo touch $OUTPUT/console.log
 	sudo chmod 666 $OUTPUT/console.log
-	sudo cp ./bbb-01.conf /usr/lib/python2.7/dist-packages/lava_dispatcher/pipeline/devices/
+	sudo cp ./devices/bbb-01.conf /usr/lib/python2.7/dist-packages/lava_dispatcher/pipeline/devices/
 	sudo lava-dispatch --target bbb-01 ./bbb-uboot-nfs.yaml --output-dir=$OUTPUT | tee $OUTPUT/console.log
 	rsync -az $OUTPUT ..
 fi
