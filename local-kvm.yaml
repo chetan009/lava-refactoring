@@ -12,7 +12,8 @@ priority: medium
 actions:
 
     - deploy:
-        timeout: 20m
+        timeout:
+         minutes: 20
         to: tmpfs
         image: http://images.validation.linaro.org/kvm/kvm-debian-wheezy.img.gz
         compression: gz
