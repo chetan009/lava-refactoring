@@ -1,0 +1,49 @@
+device_type: mx53loco
+job_name: "Debian unstable ARMMP health"
+timeouts:
+  job:
+    seconds: 1800
+  action:
+    minutes: 5
+priority: medium
+
+actions:
+
+  - deploy:
+     timeout:
+       minutes: 4
+     to: tftp
+     kernel: http://hobbes/images/imx53/debian-unstable-armhf-armmp.img.gz
+     nfsrootfs:
+     os: debian
+     dtb:
+
+  - boot:
+     timeout:
+       minutes: 3
+     method: u-boot
+     commands: nfs
+     type: bootz
+     auto_login:
+       login_prompt: login
+       username: root
+       password_prompt: Password
+       password: root
+
+  - test:
+     failure_retry: 3
+     name: bbb-debian-armmp-hacking
+     timeout:
+       minutes: 10 # uses install:deps, so takes longer than singlenode01
+     definitions:
+         - repository: git://git.linaro.org/qa/test-definitions.git
+           from: git
+           path: ubuntu/smoke-tests-basic.yaml
+           name: smoke
+         - repository: http://git.linaro.org/git/people/neil.williams/temp-functional-tests.git
+           from: git
+           path: singlenode/singlenode02.yaml
+           name: singlenode02
+
+  - submit_results:
+        stream: /anonymous/codehelp/
