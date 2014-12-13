@@ -23,6 +23,8 @@ actions:
      dtb: http://images.validation.linaro.org/functional-test-images/panda/omap4-panda-es.dtb
 
   - boot:
+     timeout:
+       minutes: 4
      method: u-boot
      commands: ramdisk
      type: bootm
