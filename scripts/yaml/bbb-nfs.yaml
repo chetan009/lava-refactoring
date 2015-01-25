@@ -1,0 +1,51 @@
+# Sample JOB definition for a u-boot job
+
+device_type: beaglebone-black
+
+job_name: uboot-pipeline
+timeouts:
+  job:
+    minutes: 15
+  action:
+    seconds: 30
+  extract-nfsrootfs:
+    seconds: 90
+priority: medium
+
+actions:
+
+  - deploy:
+     timeout:
+       minutes: 3
+     to: tftp
+     kernel: http://hobbes/images/bbb/zImage
+     nfsrootfs: http://hobbes/images/chroots/debian-jessie-rootfs.tar.gz
+     os: debian
+     dtb: http://hobbes/images/bbb/am335x-bone.dtb
+
+  - boot:
+     timeout:
+       minutes: 2
+     method: u-boot
+     commands: nfs
+     type: bootz
+     parameters:
+       shutdown-message: "reboot: Restarting system"
+
+  - test:
+     failure_retry: 3
+     name: kvm-basic-singlenode
+     timeout:
+       minutes: 8
+     definitions:
+         - repository: git://git.linaro.org/qa/test-definitions.git
+           from: git
+           path: ubuntu/smoke-tests-basic.yaml
+           name: smoke-tests
+         - repository: http://git.linaro.org/lava-team/lava-functional-tests.git
+           from: git
+           path: lava-test-shell/single-node/singlenode03.yaml
+           name: singlenode-advanced
+
+  - submit_results:
+        stream: /anonymous/codehelp/

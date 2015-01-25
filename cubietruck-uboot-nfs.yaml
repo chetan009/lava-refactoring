@@ -1,0 +1,48 @@
+# Sample JOB definition for a u-boot job
+
+device_type: cubietruck
+
+job_name: uboot-nfs-cubie
+timeouts:
+  job:
+    minutes: 15            # timeout for the whole job (default: ??h)
+  action:
+    minutes: 5         # default timeout applied for each action; can be overriden in the action itself (default: ?h)
+priority: medium
+
+actions:
+
+  - deploy:
+     timeout:
+       minutes: 4
+     to: tftp
+     kernel: file:///home/linaro/lava/cubietruck/debian/installed/vmlinuz-3.16.0-4-armmp-lpae
+     modules: file:///home/linaro/lava/cubietruck/debian/installed/modules.tgz
+     nfsrootfs: file:///home/linaro/chroots/jessie.tar.gz
+     dtb: file:///home/linaro/lava/cubietruck/debian/installed/dtb-3.16.0-4-armmp-lpae
+     os: debian
+
+  - boot:
+     timeout:
+       minutes: 3
+     method: u-boot
+     commands: nfs
+     type: bootz
+
+  - test:
+     failure_retry: 3
+     name: kvm-basic-singlenode  # is not present, use "test $N"
+     timeout:
+       minutes: 5 # uses install:deps, so takes longer than singlenode01
+     definitions:
+         - repository: git://git.linaro.org/qa/test-definitions.git
+           from: git
+           path: ubuntu/smoke-tests-basic.yaml
+           name: smoke-tests
+         - repository: http://git.linaro.org/lava-team/lava-functional-tests.git
+           from: git
+           path: lava-test-shell/single-node/singlenode02.yaml
+           name: singlenode-intermediate
+
+  - submit_results:
+        stream: /anonymous/codehelp/

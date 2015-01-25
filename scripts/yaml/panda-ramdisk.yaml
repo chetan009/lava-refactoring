@@ -1,0 +1,45 @@
+device_type: panda
+
+job_name: uboot-pipeline
+job_timeout:
+  minutes: 15
+action_timeout:
+  minutes: 5
+priority: medium
+
+actions:
+
+  - deploy:
+     timeout:
+       minutes: 2
+     to: tftp
+     kernel: http://hobbes/images/panda/uImage-es
+     ramdisk: http://hobbes/images/common/linaro-image-minimal-initramfs-genericarmv7a.cpio.gz.u-boot
+     ramdisk-type: u-boot
+     os: oe
+     dtb: http://hobbes/images/panda/omap4-panda-es.dtb
+
+  - boot:
+     method: u-boot
+     commands: ramdisk
+     type: bootm
+     timeout:
+       minutes: 2
+
+  - test:
+     failure_retry: 3
+     name: kvm-basic-singlenode
+     timeout:
+       minutes: 5
+     definitions:
+         - repository: git://git.linaro.org/qa/test-definitions.git
+           from: git
+           path: ubuntu/smoke-tests-basic.yaml
+           name: smoke-tests
+         - repository: http://git.linaro.org/lava-team/lava-functional-tests.git
+           from: git
+           path: lava-test-shell/single-node/singlenode02.yaml
+           name: singlenode-intermediate
+
+  - submit_results:
+        stream: /anonymous/codehelp/
