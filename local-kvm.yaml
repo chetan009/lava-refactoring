@@ -3,17 +3,20 @@
 device_type: kvm
 
 job_name: kvm-pipeline
-job_timeout:
-  minutes: 15            # timeout for the whole job (default: ??h)
-action_timeout:
-  minutes: 5         # default timeout applied for each action; can be overriden in the action itself (default: ?h)
+timeouts:
+  job:
+    minutes: 5
+  action:
+    minutes: 1
+  test:
+    minutes: 3
 priority: medium
 
 actions:
 
     - deploy:
         timeout:
-         minutes: 20
+          minutes: 20
         to: tmpfs
         image: http://images.validation.linaro.org/kvm/kvm-debian-wheezy.img.gz
         compression: gz
@@ -24,7 +27,7 @@ actions:
         root_partition: 1
 
     - boot:
-        method: kvm
+        method: qemu
         media: tmpfs
         failure_retry: 2
 

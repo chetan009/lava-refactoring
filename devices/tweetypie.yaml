@@ -1,0 +1,114 @@
+device_type: cubietruck
+commands:
+  connect: telnet localhost  6000
+# hard_reset: /usr/local/lab-scripts/pduclient --daemon services --hostname pdu15 --command reboot --port 11
+# power_off: /usr/local/lab-scripts/pduclient --daemon services --hostname pdu15 --command off --port 11
+# power_on: /usr/local/lab-scripts/pduclient --daemon services --hostname pdu15 --command on --port 11
+# testboot_offset = 2
+parameters:
+  bootz:
+    kernel: '0x47000000'
+    ramdisk: '0x48000000'
+    dtb: '0x43000000'
+  usb:
+    SanDisk_Cruzer:
+      uuid: "usb-SanDisk_Cruzer_Blade_20040202820284831994-0:0"
+      device_id: 0
+  sata:
+    ST160LM003:
+      uuid: ata-ST160LM003_HN-M160MBB_S2SYJ9KC102184
+      device_id: 0
+      uboot_interface: scsi
+
+# requires mainline u-boot, e.g. from Debian:
+# https://wiki.debian.org/InstallingDebianOn/Allwinner#U-boot_versions_for_sunxi-based_systems
+
+actions:
+  deploy:
+    # list of deployment methods which this device supports
+    methods:
+      usb
+      sata
+      tftp
+  boot:
+    # list of boot methods which this device supports.
+    methods:
+    - u-boot:
+        parameters:
+          bootloader_prompt: sun7i
+          boot_message: Booting Linux
+          send_char: False
+        # method specific stanza
+        ramdisk:
+          commands:
+          - setenv autoload no
+          - setenv ethaddr 02:81:08:42:fd:36  # might not be needed with the Debian u-boot
+          - setenv initrd_high '0xffffffff'
+          - setenv fdt_high '0xffffffff'
+          - setenv kernel_addr_r '{KERNEL_ADDR}'
+          - setenv initrd_addr_r '{RAMDISK_ADDR}'
+          - setenv fdt_addr_r '{DTB_ADDR}'
+          - setenv loadkernel 'tftp ${kernel_addr_r} {KERNEL}'
+          - setenv loadinitrd 'tftp ${initrd_addr_r} {RAMDISK}; setenv initrd_size ${filesize}'
+          - setenv loadfdt 'tftp ${fdt_addr_r} {DTB}'
+          - setenv bootargs 'console=ttyS0,115200 debug rw root=/dev/ram0 ip=dhcp'
+          - setenv bootcmd 'dhcp; setenv serverip {SERVER_IP}; run loadkernel; run loadinitrd; run loadfdt; {BOOTX}'
+          - boot
+        usb:
+          commands:
+          - usb start
+          - usb info
+          - setenv autoload no
+          - setenv initrd_high '0xffffffff'
+          - setenv fdt_high '0xffffffff'
+          - setenv initrd_addr_r ${ramdisk_addr_r}
+          - setenv loadkernel 'load usb {ROOT_PART} ${kernel_addr_r} {KERNEL}'
+          - setenv loadinitrd 'load usb {ROOT_PART} ${initrd_addr_r} {RAMDISK}; setenv initrd_size ${filesize}'
+          - setenv loadfdt 'load usb {ROOT_PART} ${fdt_addr_r} {DTB}'
+          - setenv bootargs 'console=ttyS0,115200n8 root={ROOT} ip=dhcp'
+          - setenv bootcmd 'run loadkernel; run loadinitrd; run loadfdt; {BOOTX}'
+          - boot
+        # u-boot calls this scsi but the name needs to match the value in the media list
+        sata:
+          commands:
+          - scsi scan
+          - setenv autoload no
+          - setenv autoload no
+          - setenv initrd_high '0xffffffff'
+          - setenv fdt_high '0xffffffff'
+          - setenv initrd_addr_r ${ramdisk_addr_r}
+          - setenv loadkernel 'load scsi {ROOT_PART} ${kernel_addr_r} {KERNEL}'
+          - setenv loadinitrd 'load scsi {ROOT_PART} ${initrd_addr_r} {RAMDISK}; setenv initrd_size ${filesize}'
+          - setenv loadfdt 'load scsi {ROOT_PART} ${fdt_addr_r} {DTB}'
+          - setenv bootargs 'console=ttyS0,115200n8 root={ROOT} ip=dhcp'
+          - setenv bootcmd 'run loadkernel; run loadinitrd; run loadfdt; {BOOTX}'
+          - boot
+        nfs:
+          commands:
+          - setenv autoload no
+          - setenv initrd_high '0xffffffff'
+          - setenv fdt_high '0xffffffff'
+          - setenv kernel_addr_r '{KERNEL_ADDR}'
+          - setenv initrd_addr_r '{RAMDISK_ADDR}'
+          - setenv fdt_addr_r '{DTB_ADDR}'
+          - setenv loadkernel 'tftp ${kernel_addr_r} {KERNEL}'
+          - setenv loadinitrd 'tftp ${initrd_addr_r} {RAMDISK}; setenv initrd_size ${filesize}'
+          - setenv loadfdt 'tftp ${fdt_addr_r} {DTB}'
+          - "setenv nfsargs 'setenv bootargs console=ttyS0,115200n8 root=/dev/nfs rw nfsroot={SERVER_IP}:{NFSROOTFS},tcp,hard,intr ip=dhcp'"
+          - setenv bootcmd 'dhcp; setenv serverip {SERVER_IP}; run loadkernel; run loadinitrd; run loadfdt; run nfsargs; {BOOTX}'
+          - boot
+
+test_image_prompts:
+  # TODO: we should'nt need such a long list
+  - '\(initramfs\)'
+  - '/ #'
+  - 'root@android'
+  - 'root@linaro'
+  - 'root@master'
+  - 'root@debian'
+  - 'root@linaro-nano:~#'
+  - 'root@linaro-developer:~#'
+  - 'root@linaro-server:~#'
+  - 'root@genericarmv7a:~#'
+  - 'root@genericarmv8:~#'
+  - 'linaro-test'

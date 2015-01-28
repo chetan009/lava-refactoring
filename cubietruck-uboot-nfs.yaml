@@ -28,6 +28,8 @@ actions:
      method: u-boot
      commands: nfs
      type: bootz
+     parameters:
+       shutdown-message: "reboot: Restarting system"
 
   - test:
      failure_retry: 3

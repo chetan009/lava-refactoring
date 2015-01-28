@@ -5,12 +5,10 @@ device_type: beaglebone-black
 job_name: uboot-nfs-bbb
 timeouts:
   job:
-    minutes: 15            # timeout for the whole job (default: ??h)
+    minutes: 15
   action:
-    minutes: 5         # default timeout applied for each action; can be overriden in the action itself (default: ?h)
+    minutes: 5
 priority: medium
-
-# example old-style job: https://staging.validation.linaro.org/scheduler/job/113682/definition
 
 actions:
 
@@ -29,6 +27,8 @@ actions:
      method: u-boot
      commands: nfs
      type: bootz
+     parameters:
+       shutdown-message: "reboot: Restarting system"
 
   - test:
      failure_retry: 3

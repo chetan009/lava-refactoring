@@ -3,10 +3,11 @@
 device_type: beaglebone-black
 
 job_name: uboot-pipeline
-job_timeout:
-  minutes: 15            # timeout for the whole job (default: ??h)
-action_timeout:
-  minutes: 5         # default timeout applied for each action; can be overriden in the action itself (default: ?h)
+timeouts:
+  job:
+    minutes: 15            # timeout for the whole job (default: ??h)
+  action:
+   minutes: 5         # default timeout applied for each action; can be overriden in the action itself (default: ?h)
 priority: medium
 
 # example old-style job: https://staging.validation.linaro.org/scheduler/job/113682/definition
@@ -25,9 +26,13 @@ actions:
      dtb: http://images.validation.linaro.org/functional-test-images/bbb/am335x-bone.dtb
 
   - boot:
+     timeout:
+       seconds: 60
      method: u-boot
      commands: ramdisk
      type: bootz
+     parameters:
+       shutdown-message: "reboot: Restarting system"
 
   - test:
      failure_retry: 3

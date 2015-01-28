@@ -5,9 +5,9 @@ device_type: cubietruck
 job_name: uboot-nfs-cubie
 timeouts:
   job:
-    minutes: 15            # timeout for the whole job (default: ??h)
+    minutes: 15
   action:
-    minutes: 5         # default timeout applied for each action; can be overriden in the action itself (default: ?h)
+    minutes: 5
 priority: medium
 
 actions:
@@ -16,10 +16,11 @@ actions:
      timeout:
        minutes: 4
      to: tftp
-     kernel: file:///home/linaro/lava/cubietruck/debian/installed/vmlinuz-3.16.0-4-armmp-lpae
-     ramdisk: file:///home/linaro/lava/cubietruck/debian/installed/initrd.img-3.16.0-4-armmp-lpae
+     kernel: file:///home/linaro/lava/cubietruck/armmp/vmlinuz-3.16-2-armmp
+     ramdisk: file:///home/linaro/lava/cubietruck/armmp/initrd.img-3.16-2-armmp.u-boot
+     ramdisk-type: u-boot
      # nfsrootfs: http://images.validation.linaro.org/debian-jessie-rootfs.tar.gz
-     dtb: file:///home/linaro/lava/cubietruck/debian/installed/dtb-3.16.0-4-armmp-lpae
+     dtb: file:///home/linaro/lava/cubietruck/armmp/dtb-3.16-2-armmp
      os: debian
 
   - boot:
@@ -28,6 +29,8 @@ actions:
      method: u-boot
      commands: ramdisk
      type: bootz
+     parameters:
+       shutdown-message: "reboot: Restarting system"
 
   - test:
      failure_retry: 3
