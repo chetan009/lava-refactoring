@@ -1,9 +1,6 @@
 {% extends 'panda.yaml' %}
-{% set connection_command = "telnet playgroundmaster 7010" %}
-{% set hard_reset_command = (
-"/usr/bin/pduclient --daemon services --hostname pdu14 --command reboot --port 10") %}
-{% set power_off_command = (
-"/usr/bin/pduclient --daemon services --hostname pdu14 --command off --port 10") %}
-{% set power_on_command = (
-"/usr/bin/pduclient --daemon services --hostname pdu14 --command on --port 10") %}
+{% set connection_command = "telnet playgroundmaster 7011" %}
+{% set hard_reset_command = "/usr/bin/pduclient --daemon services --hostname pdu14 --command reboot --port 7" %}
+{% set power_off_command = "/usr/bin/pduclient --daemon services --hostname pdu14 --command off --port 7" %}
+{% set power_on_command = "/usr/bin/pduclient --daemon services --hostname pdu14 --command on --port 7" %}
 
