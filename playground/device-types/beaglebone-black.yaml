@@ -15,11 +15,6 @@ parameters:
    kernel: '{{ bootz_kernel_addr|default('0x81000000') }}'
    ramdisk: '{{ bootz_ramdisk_addr|default('0x82000000') }}'
    dtb: '{{ bootz_dtb_addr|default('0x81f00000') }}'
-  media:
-    usb:
-      {{ usb_label|default('SanDisk_Ultra') }}:
-        uuid: {{ usb_uuid }}  # /dev/disk/by-id/
-        device_id: {{ usb_device_id|default(0) }}  # the bootloader device id for this media on the 'usb' interface
 
 actions:
   deploy:
