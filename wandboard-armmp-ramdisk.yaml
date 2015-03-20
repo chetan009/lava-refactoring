@@ -1,0 +1,35 @@
+# wandboard ARMMP test - 297
+
+device_type: wandboard
+
+job_name: uboot-wandboard-armmp
+job_timeout:
+  minutes: 15
+action_timeout:
+  minutes: 5
+priority: medium
+
+actions:
+
+  # needs to be a list of hashes to retain the order
+  - deploy:
+     timeout:
+       minutes: 2
+     to: tftp
+     kernel: http://d-i.debian.org/daily-images/armhf/daily/netboot/vmlinuz
+     ramdisk: http://images.armcloud.us/lava/common/linaro-image-minimal-initramfs-genericarmv7a.cpio.gz.u-boot
+     ramdisk-type: u-boot
+     dtb: http://d-i.debian.org/daily-images/armhf/daily/device-tree/imx6q-wandboard.dtb
+     os: oe
+
+  - boot:
+     timeout:
+       minutes: 1
+     method: u-boot
+     parameters:
+       shutdown-message: "reboot: Restarting system"
+     commands: ramdisk
+     type: bootz
+
+  - submit_results:
+        stream: /anonymous/codehelp/
