@@ -14,6 +14,7 @@ actions:
           minutes: 20
         to: tmpfs
         image: http://images.validation.linaro.org/kvm/large-sid.img.gz
+        compression: gz
         os: debian
         root_partition: 1
 

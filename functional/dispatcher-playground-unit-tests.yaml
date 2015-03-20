@@ -37,13 +37,12 @@ install:
         - qemu-system-x86
         - python-nose
         - python-zmq
-    git-repos:
-        - git://git.linaro.org/lava/lava-dispatcher.git
 
 
 run:
     steps:
         - modprobe loop || true
+        - git clone git://git.linaro.org/lava/lava-dispatcher.git
         - cd lava-dispatcher
         - git checkout -b playground origin/playground
         - git log -n1
