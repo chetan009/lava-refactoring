@@ -56,7 +56,7 @@ run:
         - git clone git://git.linaro.org/lava/lava-dispatcher.git
         - cd lava-dispatcher
         - git checkout -b playground origin/playground
-        - python sepup.py install
+        - python setup.py install
         - cd ..
         - git clone git://git.linaro.org/lava/lava-server.git
         - cd lava-server
