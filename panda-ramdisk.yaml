@@ -3,15 +3,15 @@
 device_type: panda
 
 job_name: uboot-pipeline
-job_timeout:
-  minutes: 15            # timeout for the whole job (default: ??h)
-action_timeout:
-  minutes: 5         # default timeout applied for each action; can be overriden in the action itself (default: ?h)
+timeouts:
+  job:
+    minutes: 15
+  action:
+    minutes: 5
 priority: medium
 
 actions:
 
-  # needs to be a list of hashes to retain the order
   - deploy:
      timeout:
        minutes: 2
@@ -23,11 +23,11 @@ actions:
      dtb: http://images.validation.linaro.org/functional-test-images/panda/omap4-panda-es.dtb
 
   - boot:
-     timeout:
-       minutes: 4
      method: u-boot
      commands: ramdisk
      type: bootm
+     timeout:
+       minutes: 2
 
   - test:
      failure_retry: 3

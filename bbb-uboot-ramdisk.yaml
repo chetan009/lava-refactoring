@@ -5,16 +5,13 @@ device_type: beaglebone-black
 job_name: uboot-pipeline
 timeouts:
   job:
-    minutes: 15            # timeout for the whole job (default: ??h)
+    minutes: 15
   action:
-   minutes: 5         # default timeout applied for each action; can be overriden in the action itself (default: ?h)
+    minutes: 5
 priority: medium
-
-# example old-style job: https://staging.validation.linaro.org/scheduler/job/113682/definition
 
 actions:
 
-  # needs to be a list of hashes to retain the order
   - deploy:
      timeout:
        minutes: 4
@@ -43,10 +40,6 @@ actions:
          - repository: git://git.linaro.org/qa/test-definitions.git
            from: git
            path: ubuntu/smoke-tests-basic.yaml
-           # name: if not present, use the name from the YAML. The name can
-           # also be overriden from the actual commands being run by
-           # calling the lava-test-suite-name API call (e.g.
-           # `lava-test-suite-name FOO`).
            name: smoke-tests
          - repository: http://git.linaro.org/lava-team/lava-functional-tests.git
            from: git

@@ -1,32 +1,32 @@
- # Sample JOB definition for a u-boot job
+# Sample JOB definition for a u-boot job
 
-device_type: beaglebone-black
+device_type: panda
 
 job_name: uboot-nfs-panda
 timeouts:
   job:
-    minutes: 15     # timeout for the whole job
+    minutes: 15
   action:
-    minutes: 5      # default timeout applied for each action; can be overriden in the action itself
+    minutes: 5
 priority: medium
 
 actions:
 
   - deploy:
      timeout:
-       minutes: 2
+       minutes: 4
      to: tftp
-     kernel: http://hobbes/images/panda/uImage
+     kernel: http://images.validation.linaro.org/functional-test-images/panda/uImage
      nfsrootfs: http://images.validation.linaro.org/debian-jessie-rootfs.tar.gz
      os: debian
-     dtb: http://hobbes/images/panda/omap4-panda.dtb
+     dtb: http://images.validation.linaro.org/functional-test-images/panda/omap4-panda-es.dtb
 
   - boot:
-     timeout:
-       minutes: 5
      method: u-boot
      commands: nfs
      type: bootm
+     timeout:
+       minutes: 5
 
   - test:
      failure_retry: 3
