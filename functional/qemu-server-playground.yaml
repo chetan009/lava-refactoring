@@ -2,7 +2,7 @@ device_type: qemu
 job_name: kvm-pipeline
 timeouts:
   job:
-    minutes: 15
+    minutes: 30
   action:
     minutes: 5
 priority: medium
@@ -24,7 +24,7 @@ actions:
         failure_retry: 2
 
     - test:
-        failure_retry: 3
+        failure_retry: 10
         name: kvm-basic-singlenode  # is not present, use "test $N"
         # only s, m & h are supported.
         timeout:
