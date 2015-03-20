@@ -54,15 +54,14 @@ run:
         - lava-test-case devscripts --shell apt --no-install-recommends -y install devscripts
         - DEBIAN_FRONTEND=noninteractive apt-get -y install -o Dpkg::Options::="--force-confold" lava-dispatcher lava-server
         - git clone git://git.linaro.org/lava/lava-dispatcher.git
+        - git clone git://git.linaro.org/lava/lava-server.git
         - cd lava-dispatcher
         - git checkout -b playground origin/playground
-        - python setup.py install
-        - cd ..
-        - git clone git://git.linaro.org/lava/lava-server.git
-        - cd lava-server
+        - lava-test-case update-dispatcher --shell python setup.py install
+        - cd ../lava-server
         - git checkout -b playground origin/playground
-        - git log -n1
-        - ../lava/version-wrapper.py
+        - lava-test-case commitlog --shell git log -n1
+        - ../functional/version-wrapper.py
         - lava-test-case unit-tests --shell ./ci-run -v2
 
 parse:
