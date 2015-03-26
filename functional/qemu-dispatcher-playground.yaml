@@ -28,7 +28,7 @@ actions:
         name: kvm-basic-singlenode  # is not present, use "test $N"
         # only s, m & h are supported.
         timeout:
-          minutes: 5 # uses install:deps, so takes longer than singlenode01
+          minutes: 5
         definitions:
             - repository: http://git.linaro.org/lava-team/refactoring.git
               from: git

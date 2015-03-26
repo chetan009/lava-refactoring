@@ -46,11 +46,11 @@ run:
         - cd lava-dispatcher
         - git checkout -b playground origin/playground
         - git log -n1
-        - ../lava/version-wrapper.py
+        - ../functional/version-wrapper.py
         - lava-test-case pep8 --shell pep8 --ignore E501 .
-        - ../lava/unittests.sh
-        - ../lava/fixme-report.sh
-        - ../lava/pylint.sh "lava_dispatcher/pipeline"
+        - ../functional/unittests.sh
+        - ../functional/fixme-report.sh
+        - ../functional/pylint.sh "lava_dispatcher/pipeline"
 
 parse:
     pattern: "(?P<test_case_id>.*) ... (?P<result>(ok|FAIL))"
