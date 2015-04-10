@@ -1,0 +1,60 @@
+job_name: panda-multinode
+
+timeouts:
+  job:
+    minutes: 5
+  action:
+    minutes: 1
+  test:
+    minutes: 3
+
+protocols:
+  lava-multinode:
+    roles:
+      client:
+        device_type: panda
+        count: 1
+      server:
+        device_type: panda
+        count: 1
+    timeout:
+      seconds: 60
+
+priority: medium
+
+actions:
+
+  - deploy:
+     timeout:
+       minutes: 2
+     to: tftp
+     kernel: http://images.validation.linaro.org/functional-test-images/panda/uImage
+     ramdisk: http://images.validation.linaro.org/functional-test-images/common/linaro-image-minimal-initramfs-genericarmv7a.cpio.gz.u-boot
+     ramdisk-type: u-boot
+     os: oe
+     dtb: http://images.validation.linaro.org/functional-test-images/panda/omap4-panda-es.dtb
+     role:
+     - server
+     - client
+
+  - boot:
+     timeout:
+       minutes: 4
+     method: u-boot
+     commands: ramdisk
+     type: bootm
+     role:
+     - server
+     - client
+
+  - test:
+     failure_retry: 3
+     name: panda-intermediate-multinode
+     definitions:
+         - repository: http://git.linaro.org/lava-team/lava-functional-tests.git
+           from: git
+           path: lava-test-shell/multi-node/multinode02.yaml
+           name: multinode-intermediate
+     role:
+     - server
+     - client
