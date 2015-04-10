@@ -1,0 +1,69 @@
+job_name: kvm-multinode
+
+timeouts:
+  job:
+    minutes: 5
+  action:
+    minutes: 1
+  test:
+    minutes: 3
+
+protocols:
+  lava-multinode:
+    roles:
+      client:
+        device_type: qemu
+        count: 1
+      server:
+        device_type: qemu
+        count: 1
+    timeout:
+      seconds: 60
+
+priority: medium
+
+actions:
+
+    - deploy:
+        timeout:
+          minutes: 2
+        to: tmpfs
+        image: http://images.validation.linaro.org/kvm-debian-wheezy.img.gz
+        compression: gz
+        os: debian
+        root_partition: 1
+        role:
+        - server
+
+    - deploy:
+        timeout:
+          minutes: 2
+        to: tmpfs
+        image: http://images.validation.linaro.org/kvm-debian-wheezy.img.gz
+        compression: gz
+        os: debian
+        root_partition: 1
+        role:
+        - client
+
+    - boot:
+        method: qemu
+        media: tmpfs
+        failure_retry: 2
+        role:
+        - server
+        - client
+
+    - test:
+        failure_retry: 3
+        role: server
+        name: kvm-intermediate-multinode
+        definitions:
+            - repository: http://git.linaro.org/lava-team/lava-functional-tests.git
+              from: git
+              path: lava-test-shell/multi-node/multinode02.yaml
+              name: multinode-intermediate
+        role:
+        - server
+        - client
+
