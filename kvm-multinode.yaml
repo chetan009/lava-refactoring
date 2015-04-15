@@ -67,3 +67,5 @@ actions:
         - server
         - client
 
+context:
+  arch: amd64
