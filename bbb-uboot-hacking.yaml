@@ -17,7 +17,7 @@ actions:
        minutes: 4
      to: tftp
      kernel: http://images.validation.linaro.org/functional-test-images/bbb/zImage
-     nfsrootfs: file:///home/linaro/chroots/jessie.tar.gz
+     nfsrootfs: http://people.linaro.org/~neil.williams/jessie.tar.gz
      os: debian
      dtb: http://images.validation.linaro.org/functional-test-images/bbb/am335x-bone.dtb
 
