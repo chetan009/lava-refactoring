@@ -1,0 +1,37 @@
+# beaglebone-black ssh host
+
+job_name: bbb-ssh-host
+device_type: beaglebone-black
+
+timeouts:
+  job:
+    minutes: 10
+  action:
+    minutes: 3
+
+actions:
+  - deploy:
+      timeout:  # timeout for the connection attempt
+        seconds: 30
+      method: ssh
+      connection: ssh
+      os: debian
+
+  - boot:
+      timeout:
+        minutes: 2
+      method: ssh
+
+  - test:
+     name: kvm-basic-singlenode
+     timeout:
+       minutes: 5
+     definitions:
+         - repository: git://git.linaro.org/qa/test-definitions.git
+           from: git
+           path: ubuntu/smoke-tests-basic.yaml
+           name: smoke-tests
+         - repository: http://git.linaro.org/lava-team/lava-functional-tests.git
+           from: git
+           path: lava-test-shell/single-node/singlenode02.yaml
+           name: singlenode-intermediate

@@ -20,6 +20,8 @@ protocols:
       host:
         device_type: beaglebone-black
         count: 1
+        timeout:
+          minutes: 10
       guest:
         # protocol API call to make during protocol setup
         request: lava-start
@@ -107,15 +109,16 @@ actions:
                 run:
                     steps:
                         - ntpdate-debian
-                        - ls -l /
-                        - ls /lava-*/
-                        - lava-test-case authorize --shell cat /root/.ssh/authorized_keys
                         - lava-send ipv4 ipaddr=10.15.0.151
                         - lava-sync lava_start
                         - lava-sync clients
            from: inline
            name: ssh-inline
            path: inline/ssh-install.yaml
+         - repository: git://git.linaro.org/qa/test-definitions.git
+           from: git
+           path: ubuntu/smoke-tests-basic.yaml
+           name: smoke-tests
      role:
      - host
 
