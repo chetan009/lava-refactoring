@@ -11,15 +11,15 @@ timeouts:
 priority: medium
 
 actions:
-
   - deploy:
-     timeout:
-       minutes: 4
-     to: tftp
-     kernel: http://images.validation.linaro.org/functional-test-images/bbb/zImage
-     nfsrootfs: http://images.validation.linaro.org/debian-jessie-rootfs.tar.gz
-     os: debian
-     dtb: http://images.validation.linaro.org/functional-test-images/bbb/am335x-bone.dtb
+      timeout:
+        minutes: 4
+      to: tftp
+      kernel: http://images.validation.linaro.org/functional-test-images/bbb/zImage
+      nfsrootfs: file:///home/linaro/lava/nfsrootfs/jessie-rootfs.tar.gz
+      # nfsrootfs: http://images.validation.linaro.org/debian-jessie-rootfs.tar.gz
+      os: debian
+      dtb: http://images.validation.linaro.org/functional-test-images/bbb/am335x-bone.dtb
 
   - boot:
      timeout:
@@ -27,6 +27,9 @@ actions:
      method: u-boot
      commands: nfs
      type: bootz
+     auto_login:
+       login_prompt: "login:"
+       username: root
      parameters:
        shutdown-message: "reboot: Restarting system"
 
@@ -36,6 +39,24 @@ actions:
      timeout:
        minutes: 5 # uses install:deps, so takes longer than singlenode01
      definitions:
+         - repository:
+                metadata:
+                    format: Lava-Test Test Definition 1.0
+                    name: install-ssh
+                    description: "install step"
+                    os:
+                        - debian
+                    scope:
+                        - functional
+                install:
+                    deps:
+                        - openssh-server
+                run:
+                    steps:
+                        - ifconfig|grep "inet addr"|grep -v "127.0.0.1"|cut -d: -f2|cut -d' ' -f1
+           from: inline
+           name: ssh-inline
+           path: inline/ssh-install.yaml
          - repository: git://git.linaro.org/qa/test-definitions.git
            from: git
            path: ubuntu/smoke-tests-basic.yaml
@@ -44,6 +65,3 @@ actions:
            from: git
            path: lava-test-shell/single-node/singlenode02.yaml
            name: singlenode-intermediate
-
-  - submit_results:
-        stream: /anonymous/codehelp/

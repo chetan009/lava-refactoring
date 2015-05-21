@@ -1,10 +1,15 @@
-job_name: kvm-multinode
+job_name: kvm-delayed-multinode
+
+# Demonstration and test of delayed_start multinode
+# no actual connections made between the two VMs.
+# The IP address passed is arbitrary and no attempt is
+# made to connect to it.
 
 timeouts:
   job:
-    minutes: 5
+    minutes: 10
   action:
-    minutes: 1
+    minutes: 2
   test:
     minutes: 3
 
@@ -14,11 +19,13 @@ protocols:
       client:
         device_type: qemu
         count: 1
+        request: lava-start
+        expect_role: server
       server:
         device_type: qemu
         count: 1
     timeout:
-      seconds: 60
+      minutes: 6
 
 priority: medium
 
@@ -26,9 +33,10 @@ actions:
 
     - deploy:
         timeout:
-          minutes: 2
+          minutes: 5
         to: tmpfs
         image: http://images.validation.linaro.org/kvm-debian-wheezy.img.gz
+        # image: file:///home/linaro/lava/kvm/kvm-debian-wheezy.img.gz
         compression: gz
         os: debian
         root_partition: 1
@@ -37,35 +45,89 @@ actions:
 
     - deploy:
         timeout:
-          minutes: 2
+          minutes: 5
         to: tmpfs
         image: http://images.validation.linaro.org/kvm-debian-wheezy.img.gz
+        # image: file:///home/linaro/lava/kvm/kvm-debian-wheezy.img.gz
         compression: gz
         os: debian
         root_partition: 1
+        protocols:
+          lava-multinode:
+            api: lava-wait
+            id: ipv4
+            key: ipaddr
+            timeout:
+              minutes: 2
         role:
         - client
 
     - boot:
         method: qemu
         media: tmpfs
-        failure_retry: 2
         role:
         - server
         - client
 
     - test:
-        failure_retry: 3
+        role: server
+        name: inline-sync
+        definitions:
+        - repository:
+              metadata:
+                 format: Lava-Test Test Definition 1.0
+                 name: client-ssh
+                 description: "client step"
+                 os:
+                    - debian
+                 scope:
+                    - functional
+              run:
+                 steps:
+                    - lava-sync clients
+          from: inline
+          name: sync-client
+          path: inline/sync-client.yaml
+        role:
+        - client
+
+    - test:
+         name: install-ssh-server
+         timeout:
+           minutes: 5
+         definitions:
+         - repository:
+             metadata:
+                format: Lava-Test Test Definition 1.0
+                name: test-sync
+                description: "test api"
+                os:
+                    - debian
+                scope:
+                    - functional
+             run:
+                steps:
+                    - lava-send ipv4 ipaddr=10.15.0.151
+                    - lava-sync lava_start
+                    - lava-sync clients
+           from: inline
+           name: test-sync
+           path: inline/test-sync.yaml
+         role:
+         - server
+
+    - test:
         role: server
         name: kvm-intermediate-multinode
         definitions:
-            - repository: http://git.linaro.org/lava-team/lava-functional-tests.git
-              from: git
-              path: lava-test-shell/multi-node/multinode02.yaml
-              name: multinode-intermediate
+        - repository: http://git.linaro.org/lava-team/lava-functional-tests.git
+          from: git
+          path: lava-test-shell/multi-node/multinode02.yaml
+          name: multinode-intermediate
         role:
         - server
         - client
+
 
 context:
   arch: amd64
