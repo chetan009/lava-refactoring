@@ -44,6 +44,3 @@ actions:
            from: git
            path: singlenode/singlenode02.yaml
            name: singlenode02
-
-  - submit_results:
-        stream: /anonymous/codehelp/

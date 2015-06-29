@@ -69,6 +69,3 @@ actions:
               from: git
               path: lava-test-shell/single-node/singlenode02.yaml
               name: singlenode-intermediate
-
-    - submit_results:
-        stream: /anonymous/codehelp/

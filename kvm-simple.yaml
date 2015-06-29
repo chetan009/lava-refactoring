@@ -12,7 +12,7 @@ actions:
 
     - deploy:
         timeout:
-          minutes: 20
+          minutes: 5
         to: tmpfs
         image: http://images.validation.linaro.org/kvm-debian-wheezy.img.gz
         compression: gz
@@ -57,6 +57,3 @@ actions:
               from: git
               path: lava-test-shell/single-node/singlenode03.yaml
               name: singlenode-advanced
-
-    - submit_results:
-        stream: /anonymous/codehelp/

@@ -1,6 +1,6 @@
 # wandboard ARMMP test - 297
 
-device_type: wandboard
+device_type: imx6q-wandboard
 
 job_name: uboot-wandboard-armmp
 job_timeout:
@@ -30,6 +30,3 @@ actions:
        shutdown-message: "reboot: Restarting system"
      commands: ramdisk
      type: bootz
-
-  - submit_results:
-        stream: /anonymous/codehelp/

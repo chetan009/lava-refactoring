@@ -1,6 +1,6 @@
 device_type: cubietruck
 
-job_name: 3.16.0-4-armmp
+job_name: 3.16.0-4-armmp-nfs
 timeouts:
   job:
     minutes: 15
@@ -17,6 +17,7 @@ actions:
      kernel: http://people.linaro.org/~neil.williams/armmp/lava/vmlinuz-3.16.0-4-armmp
      # ramdisk: http://images.validation.linaro.org/functional-test-images/common/linaro-image-minimal-initramfs-genericarmv7a.cpio.gz.u-boot
      # ramdisk: http://people.linaro.org/~neil.williams/armmp/lava/initrd.img-3.16.0-4-armmp-lpae.uboot
+     # nfsrootfs: file:///home/linaro/chroots/jessie.tar.gz
      ramdisk: http://people.linaro.org/~neil.williams/armmp/lava/initrd.img-armmp.cpio.gz.u-boot
      ramdisk-type: u-boot
      os: oe
@@ -25,7 +26,7 @@ actions:
 
   - boot:
      method: u-boot
-     commands: ramdisk
+     commands: nfs
      type: bootz
      parameters:
        shutdown-message: "reboot: Restarting system"
@@ -69,6 +70,3 @@ actions:
            from: git
            path: lava-test-shell/single-node/singlenode02.yaml
            name: singlenode-intermediate
-
-  - submit_results:
-        stream: /anonymous/codehelp/
