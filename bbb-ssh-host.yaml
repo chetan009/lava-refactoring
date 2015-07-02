@@ -13,7 +13,7 @@ actions:
   - deploy:
       timeout:  # timeout for the connection attempt
         seconds: 30
-      method: ssh
+      to: ssh
       connection: ssh
       os: debian
 
