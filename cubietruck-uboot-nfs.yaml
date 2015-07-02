@@ -16,10 +16,9 @@ actions:
      timeout:
        minutes: 4
      to: tftp
-     kernel: file:///home/linaro/lava/cubietruck/debian/installed/vmlinuz-3.16.0-4-armmp-lpae
-     modules: file:///home/linaro/lava/cubietruck/debian/installed/modules.tgz
-     nfsrootfs: file:///home/linaro/chroots/jessie.tar.gz
-     dtb: file:///home/linaro/lava/cubietruck/debian/installed/dtb-3.16.0-4-armmp-lpae
+     kernel: http://images.armcloud.us/misc/tyler-virt/zImage
+     nfsrootfs: file:///tmp/nfs/linaro-utopic-nano-20150220-698.tar.gz
+     dtb: http://images.armcloud.us/misc/tyler-virt/dtbs/dts/sun7i-a20-cubietruck.dtb
      os: debian
 
   - boot:
@@ -45,6 +44,3 @@ actions:
            from: git
            path: lava-test-shell/single-node/singlenode02.yaml
            name: singlenode-intermediate
-
-  - submit_results:
-        stream: /anonymous/codehelp/

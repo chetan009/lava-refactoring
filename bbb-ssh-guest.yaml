@@ -31,7 +31,7 @@ protocols:
           minutes: 15
         # no device_type, just a connection
         connection: ssh
-        count: 1
+        count: 3
         # each ssh connection will attempt to connect to the device of role 'host'
         host_role: host
 
@@ -45,6 +45,7 @@ actions:
       # authorize for ssh adds the ssh public key to authorized_keys
       authorize: ssh
       kernel: http://images.validation.linaro.org/functional-test-images/bbb/zImage
+      # nfsrootfs: file:///home/linaro/lava/nfsrootfs/jessie-rootfs2.tar.gz
       nfsrootfs: file:///home/linaro/lava/nfsrootfs/jessie-rootfs.tar.gz
       os: debian
       dtb: http://images.validation.linaro.org/functional-test-images/bbb/am335x-bone.dtb
@@ -54,7 +55,7 @@ actions:
   - deploy:
       timeout:  # timeout for the connection attempt
         seconds: 30
-      method: ssh
+      to: ssh
       connection: ssh
       os: debian
       protocols:
@@ -109,8 +110,9 @@ actions:
                 run:
                     steps:
                         - ntpdate-debian
-                        - lava-send ipv4 ipaddr=10.15.0.151
-                        - lava-sync lava_start
+                        - lava-network broadcast eth0
+                        - lava-send ipv4 ipaddr=$(lava-network query eth0 ipv4)
+                        - lava-send lava_start
                         - lava-sync clients
            from: inline
            name: ssh-inline
@@ -131,10 +133,6 @@ actions:
            from: git
            path: ubuntu/smoke-tests-basic.yaml
            name: smoke-tests
-         - repository: http://git.linaro.org/lava-team/lava-functional-tests.git
-           from: git
-           path: lava-test-shell/single-node/singlenode02.yaml
-           name: singlenode-intermediate
            # run the inline last as the host is waiting for this final sync.
          - repository:
                 metadata:
@@ -147,6 +145,8 @@ actions:
                         - functional
                 run:
                     steps:
+                        - df -h
+                        - free
                         - lava-sync clients
            from: inline
            name: ssh-client
