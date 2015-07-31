@@ -35,7 +35,7 @@ actions:
 
   - test:
      failure_retry: 3
-     name: kvm-basic-singlenode  # is not present, use "test $N"
+     name: bbb-armmp-ramdisk  # is not present, use "test $N"
      timeout:
        minutes: 5 # uses install:deps, so takes longer than singlenode01
      definitions:
