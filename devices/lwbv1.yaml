@@ -1,0 +1,4 @@
+{% extends 'beaglebone-black.yaml' %}
+{% set connection_command = "telnet localhost 6000" %}
+
+

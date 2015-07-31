@@ -1,0 +1,49 @@
+# Sample JOB definition for a u-boot job
+
+device_type: beaglebone-black
+
+job_name: nfs-bbb-hacking
+timeouts:
+  job:
+    minutes: 15
+  action:
+    minutes: 5
+priority: medium
+
+actions:
+  - deploy:
+      timeout:
+        minutes: 4
+      to: tftp
+      kernel: http://images.validation.linaro.org/functional-test-images/bbb/zImage
+      nfsrootfs: file:///home/linaro/lava/nfsrootfs/jessie-rootfs.tar.gz
+      # nfsrootfs: http://images.validation.linaro.org/pipeline/debian-jessie-rootfs.tar.gz
+      rootfs_compression: gz
+      os: debian
+      dtb: http://images.validation.linaro.org/functional-test-images/bbb/am335x-bone.dtb
+
+  - boot:
+     timeout:
+       minutes: 3
+     method: u-boot
+     commands: nfs
+     type: bootz
+     auto_login:
+       login_prompt: "login:"
+       username: root
+     parameters:
+       shutdown-message: "reboot: Restarting system"
+
+  - test:
+     failure_retry: 3
+     name: bbb-debian-armmp-hacking
+     timeout:
+       minutes: 30 # uses install:deps, so takes longer than singlenode01
+     definitions:
+         - repository: http://git.linaro.org/lava-team/hacking-session.git
+           from: git
+           path: hacking-session-debian.yaml
+           name: hacking
+           parameters:
+            IRC_USER: "codehelp"
+            PUB_KEY: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDBmApkFpSurKKHhuJYO2wze7AtrBh/JmvjxuBzc071VLC+O4/NxGIEcOzzsQ8qaGri6vKXT6kuFp5owmzktwfSPOleB+u5iwVi5MYP1yataEpRmiuTaEB88oNDUm8tB3RryPY5Pu/cVdv2il+Apr2sdtrJYNfj28alCXIgmXK+m8eB2YAK+5aqF4dwGw4Qm5GhQrR9pb55qUHNibFPewh6sO27mkwfW8qZ6D9fnyZ1w4GJQA+O+4tYKdB2SFObI/UzPs/t3nl9vjALtjTSwBahEUGn2aP98P5vW28bA6QSSdZoqBbv5qPD+VEXK5m8LE4In/Ea2h5V7DoP0dg8sJVt neil@sylvester"

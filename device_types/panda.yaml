@@ -29,7 +29,7 @@ actions:
     methods:
       u-boot:
         parameters:
-          bootloader_prompt: {{ bootloader_prompt|default('Panda') }}
+          bootloader_prompt: {{ bootloader_prompt|default('U-Boot') }}
           boot_message: {{ boot_message|default('Linux version') }}
           send_char: False
         nfs:

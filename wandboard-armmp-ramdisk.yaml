@@ -3,10 +3,11 @@
 device_type: imx6q-wandboard
 
 job_name: uboot-wandboard-armmp
-job_timeout:
-  minutes: 15
-action_timeout:
-  minutes: 5
+timeouts:
+  job:
+    minutes: 15
+  action:
+    minutes: 5
 priority: medium
 
 actions:
