@@ -1,0 +1,35 @@
+# Sample JOB definition for a Nexus4
+device_type: nexus4
+job_name: nexus4-pipeline
+timeouts:
+  job:
+    minutes: 60            # timeout for the whole job (default: ??h)
+  action:
+    minutes: 15         # default timeout applied for each action; can be overriden in the action itself (default: ?h)
+priority: medium
+
+actions:
+  - deploy:
+      timeout:
+        minutes: 15
+      to: fastboot
+      boot: file:///home/stylesen/sandbox/android-images/occam-lmy47v/boot.img
+      userdata: file:///home/stylesen/sandbox/android-images/occam-lmy47v/userdata.img
+      system: file:///home/stylesen/sandbox/android-images/occam-lmy47v/system.img
+      os: android
+
+  - boot:
+      timeout:
+        minutes: 15
+      method: fastboot
+
+  - test:
+      failure_retry: 3
+      name: nexus4-basic
+      timeout:
+        minutes: 5
+      definitions:
+        - repository: git://git.linaro.org/qa/test-definitions.git
+          from: git
+          path: android/busybox.yaml
+          name: busybox
