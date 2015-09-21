@@ -8,6 +8,8 @@ timeouts:
     minutes: 10
   action:
     minutes: 3
+visibility:
+  - public
 
 actions:
   - deploy:

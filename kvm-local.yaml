@@ -2,6 +2,8 @@
 
 device_type: qemu
 job_name: kvm-pipeline
+visibility:
+ - public
 timeouts:
   job:
     minutes: 15            # timeout for the whole job (default: ??h)

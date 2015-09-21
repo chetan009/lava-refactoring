@@ -7,6 +7,8 @@ timeouts:
   action:
     minutes: 5
 priority: medium
+visibility:
+  - public
 
 actions:
     # secondary media - use the first deploy to get to a system which can deploy the next

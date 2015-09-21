@@ -2,14 +2,15 @@
 
 device_type: panda
 
-job_name: uboot-pipeline
+job_name: panda-uboot-pipeline
 timeouts:
   job:
     minutes: 15
   action:
     minutes: 5
 priority: medium
-
+visibility:
+  - public
 actions:
 
   - deploy:
