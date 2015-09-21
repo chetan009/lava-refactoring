@@ -13,9 +13,9 @@ actions:
       timeout:
         minutes: 15
       to: fastboot
-      boot: file:///home/stylesen/sandbox/android-images/occam-lmy47v/boot.img
-      userdata: file:///home/stylesen/sandbox/android-images/occam-lmy47v/userdata.img
-      system: file:///home/stylesen/sandbox/android-images/occam-lmy47v/system.img
+      boot: file:///home/stylesen/sandbox/android-images/stylesen-mako-userdebug-build-take-1/boot.img
+      userdata: file:///home/stylesen/sandbox/android-images/stylesen-mako-userdebug-build-take-1/userdata.img
+      system: file:///home/stylesen/sandbox/android-images/stylesen-mako-userdebug-build-take-1/system.img
       os: android
 
   - boot:
@@ -29,7 +29,7 @@ actions:
       timeout:
         minutes: 5
       definitions:
-        - repository: git://git.linaro.org/qa/test-definitions.git
+        - repository: git://git.linaro.org/people/senthil.kumaran/test-definitions.git
           from: git
-          path: android/busybox.yaml
-          name: busybox
+          path: android/echo-pass-fail-error-test.yaml
+          name: echo-pass-fail-error-test
