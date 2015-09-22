@@ -35,9 +35,12 @@ actions:
         timeout:
           minutes: 5
         to: tmpfs
-        image: http://images.validation.linaro.org/kvm-debian-wheezy.img.gz
-        # image: file:///home/linaro/lava/kvm/kvm-debian-wheezy.img.gz
-        compression: gz
+        images: 
+            rootfs: 
+              image_arg: -drive format=raw,file={rootfs}
+              url: http://images.validation.linaro.org/kvm-debian-wheezy.img.gz
+              # url: file:///home/linaro/lava/kvm/kvm-debian-wheezy.img.gz
+              compression: gz
         os: debian
         root_partition: 1
         role:
@@ -47,9 +50,12 @@ actions:
         timeout:
           minutes: 5
         to: tmpfs
-        image: http://images.validation.linaro.org/kvm-debian-wheezy.img.gz
-        # image: file:///home/linaro/lava/kvm/kvm-debian-wheezy.img.gz
-        compression: gz
+        images:
+            rootfs: 
+              image_arg: -drive format=raw,file={rootfs}
+              url: http://images.validation.linaro.org/kvm-debian-wheezy.img.gz
+              # url: file:///home/linaro/lava/kvm/kvm-debian-wheezy.img.gz
+              compression: gz
         os: debian
         root_partition: 1
         protocols:

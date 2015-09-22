@@ -15,8 +15,12 @@ actions:
         timeout:
           minutes: 20
         to: tmpfs
-        image: file:///home/linaro/lava/kvm/kvm-debian-wheezy.img.gz
-        compression: gz
+        images: 
+            rootfs:
+              image_arg: -drive format=raw,file={rootfs}
+              url: file:///home/linaro/lava/kvm/kvm-debian-wheezy.img.gz
+            # url: file:///home/neil/code/debian/vmdebootstrap/vmdebootstrap/lava.img
+              compression: gz
         os: debian
         # if root_partition partition is not present:
         # - look for a partitions labelled "root" or "ROOT" or "Root" (i.e. case insensitive)
@@ -27,6 +31,12 @@ actions:
         method: qemu
         media: tmpfs
         failure_retry: 2
+        prompts: "root@debian:"
+        # auto_login:
+        #  login_prompt: "login:"
+        #  username: root
+        #  password_prompt: "Password:"
+        #  password: rootme
 
     - test:
         failure_retry: 3
