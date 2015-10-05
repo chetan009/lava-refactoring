@@ -1,0 +1,37 @@
+# Sample JOB definition for a LXC
+device_type: lxc
+job_name: lxc-pipeline
+timeouts:
+  job:
+    minutes: 15            # timeout for the whole job (default: ??h)
+  action:
+    minutes: 5         # default timeout applied for each action; can be overriden in the action itself (default: ?h)
+priority: medium
+
+actions:
+
+  - deploy:
+      timeout:
+        minutes: 5
+      to: lxc
+      name: pipeline-lxc-test
+      distribution: debian
+      release: wheezy
+      arch: amd64
+      os: debian
+
+  - boot:
+      timeout:
+        minutes: 5
+      method: lxc
+
+  - test:
+      failure_retry: 3
+      name: lxc-basic
+      timeout:
+        minutes: 5
+      definitions:
+        - repository: git://git.linaro.org/qa/test-definitions.git
+          from: git
+          path: common/dmidecode.yaml
+          name: dmidecode
