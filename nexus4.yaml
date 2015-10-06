@@ -9,10 +9,31 @@ timeouts:
 priority: medium
 
 actions:
+  - deploy:
+      timeout:
+        minutes: 15
+      to: fastboot
+      images:
+        boot:
+          url: file:///home/stylesen/sandbox/android-images/stylesen-mako-userdebug-build-take-1/boot.img
+        userdata:
+          url: file:///home/stylesen/sandbox/android-images/stylesen-mako-userdebug-build-take-1/userdata.img
+        system:
+          url: file:///home/stylesen/sandbox/android-images/stylesen-mako-userdebug-build-take-1/system.img
+      os: android
 
-    - deploy:
-        timeout:
-          minutes: 15
-        to: fastboot
-        image: file:///home/stylesen/sandbox/android-images/occam-lmy47v/image-occam-lmy47v.zip
-        os: android
+  - boot:
+      timeout:
+        minutes: 15
+      method: fastboot
+
+  - test:
+      failure_retry: 3
+      name: nexus4-basic
+      timeout:
+        minutes: 5
+      definitions:
+        - repository: git://git.linaro.org/people/senthil.kumaran/test-definitions.git
+          from: git
+          path: android/echo-pass-fail-error-test.yaml
+          name: echo-pass-fail-error-test
