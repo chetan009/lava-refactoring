@@ -15,11 +15,11 @@ actions:
       to: fastboot
       images:
         boot:
-          url: file:///home/stylesen/sandbox/android-images/stylesen-mako-userdebug-build-take-1/boot.img
+          url: http://people.linaro.org/~senthil.kumaran/nexus4-userdebug/boot.img
         userdata:
-          url: file:///home/stylesen/sandbox/android-images/stylesen-mako-userdebug-build-take-1/userdata.img
+          url: http://people.linaro.org/~senthil.kumaran/nexus4-userdebug/userdata.img
         system:
-          url: file:///home/stylesen/sandbox/android-images/stylesen-mako-userdebug-build-take-1/system.img
+          url: http://people.linaro.org/~senthil.kumaran/nexus4-userdebug/system.img
       os: android
 
   - boot:
