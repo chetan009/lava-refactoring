@@ -28,8 +28,7 @@ protocols:
       minutes: 6
 
 priority: medium
-visibility:
-  - public
+visibility: public
 
 actions:
 

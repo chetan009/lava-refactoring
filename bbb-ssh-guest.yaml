@@ -11,8 +11,7 @@ timeouts:
     minutes: 30
   action:
     minutes: 3
-visibility:
-  - public
+visibility: public
 
 protocols:
   lava-multinode:

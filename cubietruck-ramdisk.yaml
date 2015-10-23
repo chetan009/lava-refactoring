@@ -39,8 +39,7 @@ actions:
     name: cubietruck-basic-singlenode
     timeout: {minutes: 5}
 device_type: cubietruck
-visibility:
-- public
+visibility: public
 job_name: 3.16.0-4-armmp-ramdisk
 priority: medium
 timeouts:

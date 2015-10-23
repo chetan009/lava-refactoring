@@ -73,8 +73,7 @@ actions:
     timeout: {minutes: 5}
 job_name: mustang-guest-ssh
 priority: medium
-visibility:
-  - public
+visibility: public
 protocols:
   lava-multinode:
     roles:

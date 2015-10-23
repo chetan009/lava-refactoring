@@ -19,8 +19,7 @@ actions:
     name: singlenode-mustang-demo
     timeout: {minutes: 5}
 device_type: mustang
-visibility:
-  - public
+visibility: public
 job_name: mustang-nfs-singlenode-jessie
 timeouts:
   job: {minutes: 15}
