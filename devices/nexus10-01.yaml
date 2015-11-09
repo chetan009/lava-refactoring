@@ -1,0 +1,45 @@
+commands:
+    connect: adb -s R32D300FRYP shell
+    soft_reboot: adb -s R32D300FRYP reboot bootloader
+device_type: nexus10
+serial_number: R32D300FRYP
+
+
+actions:
+  deploy:
+    methods:
+      fastboot:
+    connections:
+      serial:
+      adb:
+  boot:
+    connections:
+      adb:
+    methods:
+      fastboot:
+
+test_image_prompts:
+  - '(initramfs)'
+  - 'linaro-test'
+  - '/ #'
+  - 'root@android'
+  - 'root@master'
+  - 'root@debian'
+  - 'root@linaro:~#'
+  - 'root@linaro-nano:~#'
+  - 'root@linaro-developer:~#'
+  - 'root@linaro-server:~#'
+  - 'root@genericarmv7a:~#'
+  - 'root@genericarmv8:~#'
+  - 'shell@mako:/ $'
+  - 'shell@mako'
+  - 'shell@manta'
+timeouts:
+  apply-overlay-image:
+    seconds: 120
+  umount-retry:
+    seconds: 45
+  lava-test-shell:
+    seconds: 30
+  power_off:
+    seconds: 5
