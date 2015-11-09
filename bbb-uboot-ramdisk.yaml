@@ -29,6 +29,7 @@ actions:
      method: u-boot
      commands: ramdisk
      type: bootz
+     prompts: ['linaro-test']
      parameters:
        shutdown-message: "reboot: Restarting system"
 
