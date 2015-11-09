@@ -26,6 +26,7 @@ actions:
      method: u-boot
      commands: ramdisk
      type: bootm
+     prompts: ["root@debian:", 'linaro-test']
      timeout:
        minutes: 2
 
