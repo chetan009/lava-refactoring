@@ -43,6 +43,7 @@ actions:
     - boot:
         method: qemu
         media: tmpfs
+        prompts: ["root@debian:"]
         failure_retry: 2
         role: client
 

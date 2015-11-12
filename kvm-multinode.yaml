@@ -27,6 +27,9 @@ protocols:
     timeout:
       minutes: 6
 
+context:
+  arch: amd64
+
 priority: medium
 visibility: public
 
@@ -72,6 +75,7 @@ actions:
     - boot:
         method: qemu
         media: tmpfs
+        prompts: ["root@debian:"]
         role:
         - server
         - client
