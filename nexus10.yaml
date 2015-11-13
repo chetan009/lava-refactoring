@@ -24,8 +24,7 @@ actions:
       os: android
 
   - boot:
-      prompts:
-        - ['shell@manta']
+      prompts: ['shell@manta']
       timeout:
         minutes: 15
       method: fastboot
