@@ -25,7 +25,7 @@ actions:
 
   - boot:
       prompts:
-        - 'shell@mako'
+        - ['shell@mako']
       timeout:
         minutes: 15
       method: fastboot

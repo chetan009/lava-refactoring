@@ -25,7 +25,7 @@ actions:
 
   - boot:
       prompts:
-        - 'shell@manta'
+        - ['shell@manta']
       timeout:
         minutes: 15
       method: fastboot
