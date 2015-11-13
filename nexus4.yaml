@@ -24,6 +24,8 @@ actions:
       os: android
 
   - boot:
+      prompts:
+        - 'shell@mako'
       timeout:
         minutes: 15
       method: fastboot
