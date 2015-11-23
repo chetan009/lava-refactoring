@@ -29,10 +29,11 @@ actions:
      method: u-boot
      commands: ramdisk
      type: bootz
+     prompts: ['initramfs']
      parameters:
        shutdown-message: "reboot: Restarting system"
      timeout:
-       minutes: 2
+       minutes: 4
 
   - test:
      failure_retry: 3
