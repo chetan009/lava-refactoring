@@ -11,6 +11,7 @@ actions:
     auto_login: {login_prompt: 'login:', username: root}
     commands: nfs
     method: u-boot
+    prompts: ['root@linaro-nano:']
     timeout: {minutes: 5}
     type: bootm
 - test:
