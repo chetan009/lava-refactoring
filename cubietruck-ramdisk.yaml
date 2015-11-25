@@ -11,6 +11,7 @@ actions:
 - boot:
     commands: ramdisk
     method: u-boot
+    prompts: ['initramfs']
     parameters: {shutdown-message: 'reboot: Restarting system'}
     timeout: {minutes: 2}
     type: bootz
