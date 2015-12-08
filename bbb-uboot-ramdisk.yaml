@@ -2,7 +2,7 @@
 
 device_type: beaglebone-black
 
-job_name: uboot-pipeline
+job_name: bbb-ramdisk-uboot-oe
 timeouts:
   job:
     minutes: 15
@@ -24,20 +24,20 @@ actions:
      dtb: http://images.validation.linaro.org/functional-test-images/bbb/am335x-bone.dtb
 
   - boot:
-     timeout:
-       seconds: 60
      method: u-boot
      commands: ramdisk
      type: bootz
      prompts: ['linaro-test']
      parameters:
        shutdown-message: "reboot: Restarting system"
+     timeout:
+       minutes: 2
 
   - test:
      failure_retry: 3
-     name: kvm-basic-singlenode  # is not present, use "test $N"
+     name: kvm-basic-singlenode
      timeout:
-       minutes: 5 # uses install:deps, so takes longer than singlenode01
+       minutes: 5
      definitions:
          - repository: git://git.linaro.org/qa/test-definitions.git
            from: git

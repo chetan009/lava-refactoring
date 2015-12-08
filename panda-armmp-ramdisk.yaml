@@ -29,6 +29,7 @@ actions:
   - boot:
      method: u-boot
      commands: ramdisk
+     prompts: ['(initramfs)']
      type: bootz
      timeout:
        minutes: 2
