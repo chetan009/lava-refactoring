@@ -2,12 +2,14 @@
 
 device_type: panda
 
-job_name: panda-uboot-pipeline
+job_name: panda-uboot-ramdisk
 timeouts:
   job:
     minutes: 15
   action:
     minutes: 5
+  connection:
+    minutes: 2
 priority: medium
 visibility: public
 actions:
@@ -28,7 +30,7 @@ actions:
      type: bootm
      prompts: ["root@debian:", 'linaro-test']
      timeout:
-       minutes: 2
+       minutes: 4
 
   - test:
      failure_retry: 3
