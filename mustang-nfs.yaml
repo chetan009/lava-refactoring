@@ -25,3 +25,4 @@ job_name: mustang-nfs-singlenode-jessie
 timeouts:
   job: {minutes: 15}
   action: {minutes: 5}
+  connection: {minutes: 2}
