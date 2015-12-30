@@ -21,6 +21,7 @@ actions:
       os: debian
 
   - boot:
+      prompts: ['root@pipeline-lxc-test:/#']
       timeout:
         minutes: 5
       method: lxc
