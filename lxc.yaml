@@ -8,16 +8,19 @@ timeouts:
     minutes: 5         # default timeout applied for each action; can be overriden in the action itself (default: ?h)
 priority: medium
 
+protocols:
+  lava-lxc:
+    name: pipeline-lxc-test
+    distribution: debian
+    release: wheezy
+    arch: amd64
+
 actions:
 
   - deploy:
       timeout:
         minutes: 5
       to: lxc
-      name: pipeline-lxc-test
-      distribution: debian
-      release: wheezy
-      arch: amd64
       os: debian
 
   - boot:
