@@ -11,6 +11,8 @@ timeouts:
     minutes: 30
   action:
     minutes: 3
+  connection:
+    minutes: 5
 visibility: public
 
 protocols:
@@ -62,9 +64,14 @@ actions:
       os: debian
       protocols:
         lava-multinode:
-          api: lava-wait
-          id: ipv4
-          key: ipaddr
+        - action: prepare-scp-overlay
+          request: lava-wait
+          # messageID matches hostID
+          messageID: ipv4
+          message:
+            # the key of the message matches value of the host_key
+            # the value of the message gets substituted
+            ipaddr: $ipaddr
           timeout:  # delay_start timeout
             minutes: 5
       role:
@@ -72,13 +79,14 @@ actions:
 
   - boot:
       timeout:
-        minutes: 3
+        minutes: 15
       method: u-boot
       commands: nfs
       type: bootz
-      auto_login:
-        login_prompt: "login:"
-        username: root
+      prompts: ['root@linaro:', 'root@debian:']
+      # auto_login:
+      # login_prompt: "login:"
+      # username: root
       parameters:
         shutdown-message: "reboot: Restarting system"
       role:
@@ -87,6 +95,10 @@ actions:
   - boot:
       timeout:
         minutes: 3
+      prompts: ['root@linaro:', 'root@debian:']
+      parameters:
+        hostID: ipv4  # messageID
+        host_key: ipaddr  # message key
       method: ssh
       role:
       - guest
@@ -113,7 +125,8 @@ actions:
                     steps:
                         - ntpdate-debian
                         - lava-network broadcast eth0
-                        - lava-send ipv4 ipaddr=$(lava-network query eth0 ipv4)
+                        # messageID matches, message_key as the key.
+                        - lava-send ipv4 ipaddr=$(lava-echo-ipv4 eth0)
                         - lava-send lava_start
                         - lava-sync clients
            from: inline
