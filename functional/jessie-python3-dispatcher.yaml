@@ -36,11 +36,11 @@ actions:
 
     - test:
         failure_retry: 3
-        name: kvm-basic-singlenode
+        name: dispatcher-python3-watchdog
         timeout:
           minutes: 5
         definitions:
-            - repository: http://git.linaro.org/lava-team/lava-functional-tests.git
+            - repository: http://git.linaro.org/lava-team/refactoring.git
               from: git
               path: functional/dispatcher-pipeline-python3.yaml
               name: unit-tests-python3
