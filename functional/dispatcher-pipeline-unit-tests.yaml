@@ -1,0 +1,59 @@
+metadata:
+    format: Lava-Test Test Definition 1.0
+    name: lava-dispatcher-pipeline-unit-tests
+    description: "LAVA dispatcher pipeline unit tests on Debian unstable"
+    "version": "1.1"
+    maintainer:
+        - neil.williams@linaro.org
+    os:
+        - ubuntu
+        - debian
+    scope:
+        - functional
+    devices:
+        - kvm
+
+# These tests may need up to 512M of RAM in the KVM
+# Check the mem_cpu option in the kvm.conf device_type.
+
+install:
+    deps:
+        - git
+        - bc
+        - pep8
+        - python-lzma
+        - python-serial
+        - python-configglue
+        - python-pexpect
+        - lava-tool
+        - telnet
+        - python-netifaces
+        - python-requests
+        - python-testscenarios
+        - pylint
+        - u-boot-tools
+        - nfs-kernel-server
+        - tftpd-hpa
+        - qemu-system-x86
+        - python-nose
+        - python-zmq
+        - android-tools-adb
+        - android-tools-fastboot
+
+run:
+    steps:
+        - modprobe loop || true
+        - git clone git://git.linaro.org/lava/lava-dispatcher.git
+        - cd lava-dispatcher
+        - git log -n1
+        - ../functional/version-wrapper.py
+        - lava-test-case pep8 --shell pep8 --ignore E501 .
+        - ../functional/unittests.sh
+        - ../functional/fixme-report.sh
+        - ../functional/pylint.sh "lava_dispatcher/pipeline"
+
+parse:
+    pattern: "(?P<test_case_id>.*) ... (?P<result>(ok|FAIL))"
+    fixupdict:
+        ok: pass
+        FAIL: fail

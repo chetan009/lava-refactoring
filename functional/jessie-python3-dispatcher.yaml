@@ -1,0 +1,46 @@
+# Standard Jessie amd64 JOB definition for QEMU
+device_type: qemu
+job_name: dispatcher-python3
+
+timeouts:
+  job:
+    minutes: 5
+  action:
+    minutes: 2
+priority: medium
+visibility: public
+context:
+  arch: amd64
+
+actions:
+    - deploy:
+        timeout:
+          minutes: 2
+        to: tmpfs
+        images: 
+            rootfs: 
+              image_arg: -drive format=raw,file={rootfs}
+              url: http://snapshots.linaro.org/debian/images/lava/standard/latest/large-stable.img.gz
+              compression: gz
+        os: debian
+        root_partition: 1
+
+    - boot:
+        method: qemu
+        media: tmpfs
+        prompts: ["root@debian:"]
+        auto_login:
+          login_prompt: "login:"
+          username: root
+        failure_retry: 2
+
+    - test:
+        failure_retry: 3
+        name: kvm-basic-singlenode
+        timeout:
+          minutes: 5
+        definitions:
+            - repository: http://git.linaro.org/lava-team/lava-functional-tests.git
+              from: git
+              path: functional/dispatcher-pipeline-python3.yaml
+              name: unit-tests-python3
