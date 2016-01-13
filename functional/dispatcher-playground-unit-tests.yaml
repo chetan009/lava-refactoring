@@ -44,7 +44,6 @@ run:
         - modprobe loop || true
         - git clone git://git.linaro.org/lava/lava-dispatcher.git
         - cd lava-dispatcher
-        - git checkout -b playground origin/playground
         - git log -n1
         - ../functional/version-wrapper.py
         - lava-test-case pep8 --shell pep8 --ignore E501 .
