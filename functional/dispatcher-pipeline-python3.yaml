@@ -19,6 +19,7 @@ metadata:
 install:
     deps:
         - git
+        - bzr
         - bc
         - pep8
         - python3-serial
