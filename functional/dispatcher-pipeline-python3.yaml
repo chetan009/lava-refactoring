@@ -39,6 +39,7 @@ install:
         - python3-simplejson
         - python3-six
         - python3-urllib3
+        - openssh-client
         - android-tools-adb
         - android-tools-fastboot
 
@@ -48,7 +49,7 @@ run:
         - git clone git://git.linaro.org/lava/lava-dispatcher.git
         - cd lava-dispatcher
         - git pull https://review.linaro.org/lava/lava-dispatcher refs/changes/35/9935/3
-        - python3 -m unittest discover -v lava_dispatcher.pipeline
+        - LC_ALL=C.UTF-8 python3 -m unittest discover -v lava_dispatcher.pipeline
 
 parse:
     pattern: "(?P<test_case_id>.*) ... (?P<result>(ok|FAIL))"
