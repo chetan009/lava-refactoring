@@ -46,7 +46,7 @@ run:
         - modprobe loop || true
         - git clone git://git.linaro.org/lava/lava-dispatcher.git
         - cd lava-dispatcher
-        - git pull https://review.linaro.org/lava/lava-dispatcher refs/changes/35/9935/1
+        - git pull https://review.linaro.org/lava/lava-dispatcher refs/changes/35/9935/3
         - python3 -m unittest discover -v lava_dispatcher.pipeline
 
 parse:
