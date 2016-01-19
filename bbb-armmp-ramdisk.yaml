@@ -8,6 +8,8 @@ timeouts:
     minutes: 15
   action:
     minutes: 5
+  connection:
+    minutes: 1
 priority: medium
 visibility: public
 
@@ -28,7 +30,7 @@ actions:
      method: u-boot
      commands: ramdisk
      type: bootz
-     prompts: ['(initramfs)']
+     prompts: ['\(initramfs\)']
      parameters:
        shutdown-message: "reboot: Restarting system"
      timeout:
