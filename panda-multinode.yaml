@@ -43,6 +43,7 @@ actions:
        minutes: 4
      method: u-boot
      commands: ramdisk
+     prompts: ['linaro-test']
      type: bootm
      role:
      - server

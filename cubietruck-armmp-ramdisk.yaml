@@ -29,7 +29,7 @@ actions:
      method: u-boot
      commands: ramdisk
      type: bootz
-     prompts: ['initramfs']
+     prompts: ['\(initramfs\)']
      parameters:
        shutdown-message: "reboot: Restarting system"
      timeout:
@@ -70,5 +70,5 @@ actions:
            name: smoke-tests
          - repository: http://git.linaro.org/lava-team/lava-functional-tests.git
            from: git
-           path: lava-test-shell/single-node/singlenode02.yaml
+           path: lava-test-shell/single-node/singlenode01.yaml
            name: singlenode-intermediate
