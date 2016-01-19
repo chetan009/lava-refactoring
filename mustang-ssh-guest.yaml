@@ -45,12 +45,13 @@ actions:
     timeout: {minutes: 3}
 - test:
     definitions:
+    - {from: git, name: smoke-tests, path: ubuntu/hackbench.yaml, repository: 'git://git.linaro.org/qa/test-definitions.git'}
     - from: inline
       name: ssh-inline
       path: inline/ssh-install.yaml
       repository:
         install:
-          deps: [openssh-server, ntpdate]
+          deps: [openssh-server, ntpdate, qemu-system-arm]
         metadata:
           description: install step
           format: Lava-Test Test Definition 1.0
@@ -59,7 +60,6 @@ actions:
           scope: [functional]
         run:
           steps: [ntpdate-debian, lava-send ipv4 ipaddr=$(lava-echo-ipv4 eth0), lava-send lava_start, lava-sync clients]
-    - {from: git, name: smoke-tests, path: ubuntu/smoke-tests-basic.yaml, repository: 'git://git.linaro.org/qa/test-definitions.git'}
     name: install-ssh-server
     role: [host]
     timeout: {minutes: 30}
