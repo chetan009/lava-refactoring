@@ -39,5 +39,5 @@ actions:
         definitions:
             - repository: http://git.linaro.org/lava-team/refactoring.git
               from: git
-              path: functional/server-playground-unit-tests.yaml
+              path: functional/server-pipeline-unit-tests.yaml
               name: server-pipeline-unittests

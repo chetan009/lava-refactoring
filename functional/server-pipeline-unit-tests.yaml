@@ -1,16 +1,16 @@
 metadata:
     format: Lava-Test Test Definition 1.0
-    name: lava-server-playground-unit-tests
-    description: "LAVA server playground branch unit tests on Debian unstable"
+    name: lava-server-pipeline-unit-tests
+    description: "LAVA server pipeline branch unit tests on Debian stable"
     "version": "1.0"
     maintainer:
         - neil.williams@linaro.org
     os:
-        - ubuntu
+        - debian
     scope:
         - functional
     devices:
-        - kvm
+        - qemu
 
 # The dependencies need a KVM of at least 2Gb in size.
 
