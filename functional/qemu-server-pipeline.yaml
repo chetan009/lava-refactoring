@@ -1,11 +1,12 @@
 device_type: qemu
-job_name: kvm-pipeline
+job_name: qemu-server-pipeline
 timeouts:
   job:
     minutes: 45
   action:
     minutes: 5
 priority: medium
+visibility: public
 
 actions:
 
@@ -13,27 +14,30 @@ actions:
         timeout:
           minutes: 20
         to: tmpfs
-        image: http://images.validation.linaro.org/kvm/large-sid.img.gz
-        compression: gz
+        images: 
+            rootfs: 
+              image_arg: -drive format=raw,file={rootfs}
+              url: http://snapshots.linaro.org/debian/images/lava/standard/latest/large-stable.img.gz
+              compression: gz
         os: debian
         root_partition: 1
 
     - boot:
         method: qemu
         media: tmpfs
+        prompts: ["root@debian:"]
+        auto_login:
+          login_prompt: "login:"
+          username: root
         failure_retry: 2
 
     - test:
         failure_retry: 3
-        name: kvm-basic-singlenode  # is not present, use "test $N"
-        # only s, m & h are supported.
+        name: qemu-server-pipeline
         timeout:
           minutes: 20
         definitions:
             - repository: http://git.linaro.org/lava-team/refactoring.git
               from: git
               path: functional/server-playground-unit-tests.yaml
-              name: server-playground-unittests
-
-    - submit_results:
-        stream: /anonymous/codehelp/
+              name: server-pipeline-unittests
