@@ -21,9 +21,9 @@ actions:
      to: tftp
      kernel: http://people.linaro.org/~neil.williams/armmp/lava/vmlinuz-3.16.0-4-armmp
      ramdisk: http://people.linaro.org/~neil.williams/armmp/lava/initrd.img-armmp.cpio.gz.u-boot
-     ramdisk-type: u-boot
+     ramdisk-header: u-boot
+     ramdisk-add-header: u-boot
      #ramdisk: http://images.validation.linaro.org/functional-test-images/common/linaro-image-minimal-initramfs-genericarmv7a.cpio.gz.u-boot
-     #ramdisk-type: u-boot
      os: oe
      modules: http://people.linaro.org/~neil.williams/armmp/lava/modules.tgz
      dtb: http://people.linaro.org/~neil.williams/armmp/lava/dtbs/omap4-panda-es.dtb

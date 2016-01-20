@@ -20,7 +20,8 @@ actions:
      to: tftp
      kernel: http://d-i.debian.org/daily-images/armhf/daily/netboot/vmlinuz
      ramdisk: http://images.armcloud.us/lava/common/linaro-image-minimal-initramfs-genericarmv7a.cpio.gz.u-boot
-     ramdisk-type: u-boot
+     ramdisk-header: u-boot
+     ramdisk-add-header: u-boot
      dtb: http://d-i.debian.org/daily-images/armhf/daily/device-tree/imx6q-wandboard.dtb
      os: oe
 

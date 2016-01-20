@@ -44,7 +44,8 @@ actions:
      kernel: http://people.linaro.org/~neil.williams/opentac/zImage
      # kernel: http://images.validation.linaro.org/functional-test-images/bbb/zImage
      ramdisk: http://images.validation.linaro.org/functional-test-images/common/linaro-image-minimal-initramfs-genericarmv7a.cpio.gz.u-boot
-     ramdisk-type: u-boot
+     ramdisk-header: u-boot
+     ramdisk-add-header: u-boot
      os: oe
      dtb: http://people.linaro.org/~neil.williams/opentac/am335x-boneblack.dtb
      # dtb: http://images.validation.linaro.org/functional-test-images/bbb/am335x-bone.dtb

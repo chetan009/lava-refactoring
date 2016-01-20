@@ -20,7 +20,8 @@ actions:
      # nfsrootfs: file:///home/linaro/chroots/jessie.tar.gz
      # rootfs_compression: gz
      ramdisk: http://people.linaro.org/~neil.williams/armmp/lava/initrd.img-armmp.cpio.gz.u-boot
-     ramdisk-type: u-boot
+     ramdisk-header: u-boot
+     ramdisk-add-header: u-boot
      os: oe
      modules: http://people.linaro.org/~neil.williams/armmp/lava/modules.tgz
      dtb: http://people.linaro.org/~neil.williams/armmp/lava/dtbs/sun7i-a20-cubietruck.dtb
