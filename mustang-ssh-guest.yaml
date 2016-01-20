@@ -60,6 +60,7 @@ actions:
           scope: [functional]
         run:
           steps: [ntpdate-debian, lava-send ipv4 ipaddr=$(lava-echo-ipv4 eth0), lava-send lava_start, lava-sync clients]
+    - {from: git, name: smoke-tests, path: ubuntu/smoke-tests-basic.yaml, repository: 'git://git.linaro.org/qa/test-definitions.git'}
     name: install-ssh-server
     role: [host]
     timeout: {minutes: 30}
