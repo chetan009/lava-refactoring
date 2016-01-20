@@ -15,6 +15,8 @@ actions:
         minutes: 15
       to: fastboot
       images:
+        ptable:
+          url: http://people.linaro.org/~senthil.kumaran/hi6220-hikey-images/ptable-aosp-4g
         boot:
           url: http://people.linaro.org/~senthil.kumaran/hi6220-hikey-images/boot_fat.uefi.img
         cache:
