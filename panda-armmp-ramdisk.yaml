@@ -8,6 +8,8 @@ timeouts:
     minutes: 15
   action:
     minutes: 5
+  connection:
+    minutes: 1
 priority: medium
 visibility: public
 
@@ -29,7 +31,7 @@ actions:
   - boot:
      method: u-boot
      commands: ramdisk
-     prompts: ['(initramfs)']
+     prompts: ['\(initramfs\)']
      type: bootz
      timeout:
        minutes: 2
