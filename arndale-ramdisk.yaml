@@ -1,0 +1,42 @@
+device_type: arndale
+job_name: arndale-ramdisk-intermediate
+
+timeouts:
+  job:
+    minutes: 15
+  action:
+    minutes: 5
+  connection:
+    minutes: 2
+priority: medium
+visibility: public
+
+actions:
+- deploy:
+    dtb: http://images.validation.linaro.org/functional-test-images/arndale/exynos5250-arndale.dtb
+    kernel: http://images.validation.linaro.org/functional-test-images/arndale/uImage
+    ramdisk: http://people.linaro.org/~neil.williams/armmp/lava/initrd.img-armmp.cpio.gz.u-boot
+    ramdisk-header: u-boot
+    ramdisk-add-header: u-boot
+    os: oe
+    to: tftp
+- boot:
+    commands: ramdisk
+    method: u-boot
+    prompts: ['\(initramfs\)']
+    timeout: {minutes: 5}
+    type: bootm
+- test:
+   failure_retry: 3
+   name: bbb-armmp-ramdisk-singlenode-intermediate
+   timeout:
+     minutes: 5
+   definitions:
+     - repository: git://git.linaro.org/qa/test-definitions.git
+       from: git
+       path: ubuntu/smoke-tests-basic.yaml
+       name: smoke-tests
+     - repository: http://git.linaro.org/lava-team/lava-functional-tests.git
+       from: git
+       path: lava-test-shell/single-node/singlenode02.yaml
+       name: singlenode-intermediate
