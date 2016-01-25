@@ -7,6 +7,8 @@ timeouts:
     minutes: 5
 priority: medium
 visibility: public
+context:
+  arch: amd64
 
 actions:
 
