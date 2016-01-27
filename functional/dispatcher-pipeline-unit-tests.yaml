@@ -51,9 +51,3 @@ run:
         - ../functional/unittests.sh
         - ../functional/fixme-report.sh
         - ../functional/pylint.sh "lava_dispatcher/pipeline"
-
-parse:
-    pattern: "(?P<test_case_id>.*) ... (?P<result>(ok|FAIL))"
-    fixupdict:
-        ok: pass
-        FAIL: fail
