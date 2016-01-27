@@ -42,6 +42,7 @@ install:
         - python-zmq
         - python-jinja2
         - python-ldap
+        - python-voluptuous
 
 run:
     steps:
