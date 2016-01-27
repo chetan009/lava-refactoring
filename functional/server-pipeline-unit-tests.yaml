@@ -35,6 +35,7 @@ install:
         - python-simplejson
         - python-twisted
         - django-testscenarios
+        - qemu-system-x86
         - python-mocker
         - python-markdown
         - python-markupsafe
@@ -42,33 +43,25 @@ install:
         - python-zmq
         - python-jinja2
         - python-ldap
+        - python-urllib3
         - python-voluptuous
+        - lava-coordinator
+        - locales
 
 run:
     steps:
         # fix up the hosts file before installing apache
         # need to have an image with backports enabled.
         - echo 127.0.0.1   localhost `hostname` >> /etc/hosts
-        - lava-test-case uwsgi --shell apt -y install apache2 libapache2-mod-wsgi libapache2-mod-uwsgi python-django
+        - lava-test-case uwsgi --shell apt -y install apache2 libapache2-mod-wsgi libapache2-mod-uwsgi
         - echo "deb http://mirror.bytemark.co.uk/debian jessie-backports main" > /etc/apt/sources.list.d/lava-backports.list
         - apt update
         - apt -y -t jessie-backports install python-django-kvstore
         # devscripts needs to be installed without recommended packages.
         - lava-test-case devscripts --shell apt --no-install-recommends -y install devscripts
-        - DEBIAN_FRONTEND=noninteractive apt-get -y install -o Dpkg::Options::="--force-confold" lava-dispatcher lava-server
-        - git clone git://git.linaro.org/lava/lava-dispatcher.git
+        - DEBIAN_FRONTEND=noninteractive apt-get -y -t jessie-backports install -o Dpkg::Options::="--force-confold" lava-dispatcher lava-server
         - git clone git://git.linaro.org/lava/lava-server.git
-        - cd lava-dispatcher
-        - git checkout -b playground origin/playground
-        - lava-test-case update-dispatcher --shell python setup.py install
         - cd ../lava-server
-        - git checkout -b playground origin/playground
         - lava-test-case commitlog --shell git log -n1
         - ../functional/version-wrapper.py
-        - lava-test-case unit-tests --shell ./ci-run -v2
-
-parse:
-    pattern: "(?P<test_case_id>.*_*) .* ... (?P<result>(ok|FAIL))"
-    fixupdict:
-        ok: pass
-        FAIL: fail
+        - ../functional/unittests.sh -v2

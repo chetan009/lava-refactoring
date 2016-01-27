@@ -31,10 +31,8 @@ actions:
         auto_login:
           login_prompt: "login:"
           username: root
-        failure_retry: 2
 
     - test:
-        failure_retry: 3
         name: dispatcher-pipeline-unittests
         timeout:
           minutes: 30

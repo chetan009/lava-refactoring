@@ -1,11 +1,10 @@
 #!/bin/sh
 
-./ci-run 2>&1 | tee ci.log
+./ci-run $@ 2>&1 | tee ci.log
 RET=`echo $?`
 if [ "$RET" != "0" ]; then
 	lava-test-case logfile --result fail
 	lava-test-case-attach logfile ci.log text/plain
-	exit
 fi
 results=`grep -E "Ran [0-9]{3} tests in " ci.log | sed -E 's/^Ran ([0-9]{3}) tests in ([0-9\.]+)s$/\1 \2/'`
 count=`echo $results|cut -d' ' -f 1`
