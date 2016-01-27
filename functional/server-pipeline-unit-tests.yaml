@@ -61,7 +61,7 @@ run:
         - lava-test-case devscripts --shell apt --no-install-recommends -y install devscripts
         - DEBIAN_FRONTEND=noninteractive apt-get -y -t jessie-backports install -o Dpkg::Options::="--force-confold" lava-dispatcher lava-server
         - git clone git://git.linaro.org/lava/lava-server.git
-        - cd ../lava-server
+        - cd lava-server
         - lava-test-case commitlog --shell git log -n1
         - ../functional/version-wrapper.py
         - ../functional/unittests.sh -v2
