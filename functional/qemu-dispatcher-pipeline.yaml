@@ -2,7 +2,7 @@ device_type: qemu
 job_name: qemu-dispatcher-pipeline
 timeouts:
   job:
-    minutes: 15
+    hours: 1
   action:
     minutes: 5
 priority: medium
@@ -37,7 +37,7 @@ actions:
         failure_retry: 3
         name: dispatcher-pipeline-unittests
         timeout:
-          minutes: 5
+          minutes: 30
         definitions:
             - repository: http://git.linaro.org/lava-team/refactoring.git
               from: git
