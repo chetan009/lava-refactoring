@@ -2,7 +2,7 @@ device_type: qemu
 job_name: qemu-server-pipeline
 timeouts:
   job:
-    minutes: 45
+    hours: 1
   action:
     minutes: 5
 priority: medium
@@ -31,13 +31,11 @@ actions:
         auto_login:
           login_prompt: "login:"
           username: root
-        failure_retry: 2
 
     - test:
-        failure_retry: 3
         name: qemu-server-pipeline
         timeout:
-          minutes: 20
+          minutes: 45
         definitions:
             - repository: http://git.linaro.org/lava-team/refactoring.git
               from: git
