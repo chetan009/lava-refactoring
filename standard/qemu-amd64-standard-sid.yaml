@@ -1,6 +1,10 @@
-# Standard Jessie amd64 JOB definition for QEMU
+# Standard unstable amd64 JOB definition for QEMU
 device_type: qemu
-job_name: qemu-amd64-standard-jessie
+job_name: qemu-amd64-standard-sid
+
+# the image itself is rebuilt more often than jessie.
+# request a rebuild if there are problems with package
+# installations.
 
 timeouts:
   job:
@@ -21,7 +25,7 @@ actions:
     images: 
         rootfs: 
           image_arg: -drive format=raw,file={rootfs}
-          url: http://snapshots.linaro.org/components/lava/standard/debian/jessie/amd64/latest/large-stable.img.gz
+          url: http://snapshots.linaro.org/components/lava/standard/debian/sid/amd64/latest/large-sid.img.gz
           compression: gz
     os: debian
     root_partition: 1
@@ -46,6 +50,13 @@ actions:
           description: "Basic system test command for Linaro Ubuntu images"
         run:
           steps:
+          # needed until vmdebootstrap 1.4 is available in jessie-backports
+          - echo 'iface ens3 inet dhcp' > /etc/network/interfaces.d/lava
+          - ifup ens3
+          - systemctl enable systemd-networkd
+          - apt update
+          - apt upgrade
+          - apt dist-upgrade
           - printenv
       from: inline
       name: env-dut-inline
