@@ -1,49 +1,50 @@
-# Sample JOB definition for a u-boot job
-
 device_type: beaglebone-black
+
+# When the test action or the job times out, the hacking session
+# will end without warning.
 
 job_name: nfs-bbb-hacking
 timeouts:
+  # maximum time for the entire job, including hacking.
   job:
-    minutes: 15
+    minutes: 45
   action:
     minutes: 5
 priority: medium
+visibility: public
 
 actions:
-  - deploy:
-      timeout:
-        minutes: 4
-      to: tftp
-      kernel: http://images.validation.linaro.org/functional-test-images/bbb/zImage
-      # nfsrootfs: file:///home/linaro/lava/nfsrootfs/jessie-rootfs.tar.gz
-      nfsrootfs: http://images.validation.linaro.org/debian-jessie-rootfs.tar.gz
-      rootfs_compression: gz
-      os: debian
-      dtb: http://images.validation.linaro.org/functional-test-images/bbb/am335x-bone.dtb
+- deploy:
+    timeout:
+      minutes: 4
+    to: tftp
+    kernel: http://images.validation.linaro.org/functional-test-images/bbb/zImage
+    nfsrootfs: http://images.validation.linaro.org/debian-jessie-rootfs.tar.gz
+    rootfs_compression: gz
+    os: debian
+    dtb: http://images.validation.linaro.org/functional-test-images/bbb/am335x-bone.dtb
 
-  - boot:
-     timeout:
-       minutes: 3
-     method: u-boot
-     commands: nfs
-     type: bootz
-     auto_login:
-       login_prompt: "login:"
-       username: root
+- boot:
+   timeout:
+     minutes: 3
+   method: u-boot
+   commands: nfs
+   type: bootz
+   prompts:
+   - 'root@linaro:'
+   auto_login:
+     login_prompt: "login:"
+     username: root
+
+- test:
+   # maximum time available for hacking.
+   timeout:
+     minutes: 30
+   definitions:
+   - repository: http://git.linaro.org/lava-team/hacking-session.git
+     from: git
+     path: hacking-session-debian.yaml
+     name: hacking
      parameters:
-       shutdown-message: "reboot: Restarting system"
-
-  - test:
-     failure_retry: 3
-     name: bbb-debian-armmp-hacking
-     timeout:
-       minutes: 30 # uses install:deps, so takes longer than singlenode01
-     definitions:
-         - repository: http://git.linaro.org/lava-team/hacking-session.git
-           from: git
-           path: hacking-session-debian.yaml
-           name: hacking
-           parameters:
-            IRC_USER: ""
-            PUB_KEY: ""
+       IRC_USER: ""
+       PUB_KEY: ""

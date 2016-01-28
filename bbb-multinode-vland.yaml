@@ -36,98 +36,88 @@ protocols:
        - 100M
 
 actions:
+- deploy:
+    role:
+    - client
+    - server
+    timeout:
+      minutes: 10
+    to: tftp
+    kernel: http://people.linaro.org/~neil.williams/opentac/zImage
+    ramdisk: http://images.validation.linaro.org/functional-test-images/common/linaro-image-minimal-initramfs-genericarmv7a.cpio.gz.u-boot
+    ramdisk-header: u-boot
+    ramdisk-add-header: u-boot
+    os: oe
+    dtb: http://people.linaro.org/~neil.williams/opentac/am335x-boneblack.dtb
+    protocols:
+      lava-vland:
+      - action: lava-vland-overlay
+        request: deploy_vlans
 
-  - deploy:
-     timeout:
-       minutes: 10
-     to: tftp
-     kernel: http://people.linaro.org/~neil.williams/opentac/zImage
-     # kernel: http://images.validation.linaro.org/functional-test-images/bbb/zImage
-     ramdisk: http://images.validation.linaro.org/functional-test-images/common/linaro-image-minimal-initramfs-genericarmv7a.cpio.gz.u-boot
-     ramdisk-header: u-boot
-     ramdisk-add-header: u-boot
-     os: oe
-     dtb: http://people.linaro.org/~neil.williams/opentac/am335x-boneblack.dtb
-     # dtb: http://images.validation.linaro.org/functional-test-images/bbb/am335x-bone.dtb
-     protocols:
-       lava-vland:
-       - action: lava-vland-overlay
-         request: deploy_vlans
-     role:
-     - client
-     - server
+- boot:
+    role:
+    - server
+    - client
+    timeout:
+      seconds: 60
+    method: u-boot
+    commands: ramdisk
+    type: bootz
+    prompts:
+    - 'linaro-test'
 
-  - boot:
-     timeout:
-       seconds: 60
-     method: u-boot
-     commands: ramdisk
-     type: bootz
-     prompts: ['linaro-test']
-     parameters:
-       shutdown-message: "reboot: Restarting system"
-     role:
-     - server
-     - client
+- test:
+    role:
+    - client
+    timeout:
+      minutes: 5
+    definitions:
+    - from: inline
+      repository:
+        metadata:
+          format: Lava-Test Test Definition 1.0
+          name: raise-eth1
+          description: "raise eth1 without dhcp"
+        run:
+          steps:
+          - lava-test-case self --shell lava-vland-self
+          - lava-test-case tags --shell lava-vland-tags
+          - find /sys/devices -name '*eth*'
+          - lava-test-case network --shell ifconfig -a
+          - mkdir -p /etc/network/
+          - echo "iface eth1 inet dhcp" > /etc/network/interfaces
+          - lava-test-case up --shell ifup eth1
+          - lava-test-case raise --shell ifconfig eth1 up 192.168.0.1
+          - lava-sync eth1
+          - lava-test-case route --shell route -n
+          - lava-test-case ping --shell ping -c4 192.168.0.2
+      name: eth1-inline-client
+      path: inline/eth1.yaml
 
-  - test:
-     failure_retry: 3
-     name: raise-eth1-1
-     timeout:
-       minutes: 5
-     definitions:
-         - repository:
-                metadata:
-                    format: Lava-Test Test Definition 1.0
-                    name: raise-eth1
-                    description: "raise eth1 without dhcp"
-                run:
-                    steps:
-                        - lava-test-case self --shell lava-vland-self
-                        - lava-test-case tags --shell lava-vland-tags
-                        - find /sys/devices -name '*eth*'
-                        - lava-test-case network --shell ifconfig -a
-                        - mkdir -p /etc/network/
-                        - echo "iface eth1 inet dhcp" > /etc/network/interfaces
-                        - lava-test-case up --shell ifup eth1
-                        - lava-test-case raise --shell ifconfig eth1 up 192.168.0.1
-                        - lava-sync eth1
-                        - lava-test-case route --shell route -n
-                        - lava-test-case ping --shell ping -c4 192.168.0.2
-           from: inline
-           name: eth1-inline-client
-           path: inline/eth1.yaml
-     role:
-     - client
-
-
-  - test:
-     failure_retry: 3
-     name: raise-eth1-2
-     timeout:
-       minutes: 5
-     definitions:
-         - repository:
-                metadata:
-                    format: Lava-Test Test Definition 1.0
-                    name: raise-eth1-on-2
-                    description: "raise eth1 without dhcp"
-                run:
-                    steps:
-                        - lava-test-case self --shell lava-vland-self
-                        - lava-test-case tags --shell lava-vland-tags
-                        - find /sys/devices -name '*eth*'
-                        - lava-test-case network --shell ifconfig -a
-                        - mkdir -p /etc/network/
-                        - echo "iface eth1 inet dhcp" > /etc/network/interfaces
-                        - lava-test-case up --shell ifup eth1
-                        - lava-test-case raise --shell ifconfig eth1 up 192.168.0.2
-                        - lava-sync eth1
-                        - lava-test-case route --shell route -n
-                        - lava-test-case ping --shell ping -c4 192.168.0.1
-           from: inline
-           name: eth1-inline-server
-           path: inline/eth1-server.yaml
-     role:
-     - server
-
+- test:
+    role:
+    - server
+    timeout:
+      minutes: 5
+    definitions:
+    - from: inline
+      repository:
+        metadata:
+          format: Lava-Test Test Definition 1.0
+          name: raise-eth1-on-2
+          description: "raise eth1 without dhcp"
+        run:
+          steps:
+          - lava-test-case self --shell lava-vland-self
+          - lava-test-case tags --shell lava-vland-tags
+          - find /sys/devices -name '*eth*'
+          - lava-test-case network --shell ifconfig -a
+          - mkdir -p /etc/network/
+          - echo "iface eth1 inet dhcp" > /etc/network/interfaces
+          - lava-test-case up --shell ifup eth1
+          - lava-test-case raise --shell ifconfig eth1 up 192.168.0.2
+          - lava-sync eth1
+          - lava-test-case route --shell route -n
+          - lava-test-case ping --shell ping -c4 192.168.0.1
+      name: eth1-inline-server
+      path: inline/eth1-server.yaml

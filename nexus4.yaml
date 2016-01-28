@@ -1,41 +1,40 @@
-# Sample JOB definition for a Nexus4
 device_type: nexus4
-job_name: nexus4-pipeline
+job_name: nexus4-android
+
 timeouts:
   job:
-    minutes: 60            # timeout for the whole job (default: ??h)
+    minutes: 60
   action:
-    minutes: 15         # default timeout applied for each action; can be overriden in the action itself (default: ?h)
+    minutes: 15
 priority: medium
 visibility: public
 
 actions:
-  - deploy:
-      timeout:
-        minutes: 15
-      to: fastboot
-      images:
-        boot:
-          url: http://people.linaro.org/~senthil.kumaran/nexus4-userdebug/boot.img
-        userdata:
-          url: http://people.linaro.org/~senthil.kumaran/nexus4-userdebug/userdata.img
-        system:
-          url: http://people.linaro.org/~senthil.kumaran/nexus4-userdebug/system.img
-      os: android
+- deploy:
+    timeout:
+      minutes: 15
+    to: fastboot
+    images:
+      boot:
+        url: http://people.linaro.org/~senthil.kumaran/nexus4-userdebug/boot.img
+      userdata:
+        url: http://people.linaro.org/~senthil.kumaran/nexus4-userdebug/userdata.img
+      system:
+        url: http://people.linaro.org/~senthil.kumaran/nexus4-userdebug/system.img
+    os: android
 
-  - boot:
-      prompts: ['shell@mako']
-      timeout:
-        minutes: 15
-      method: fastboot
+- boot:
+    prompts:
+    - 'shell@mako'
+    timeout:
+      minutes: 15
+    method: fastboot
 
-  - test:
-      failure_retry: 3
-      name: nexus4-basic
-      timeout:
-        minutes: 5
-      definitions:
-        - repository: git://git.linaro.org/people/senthil.kumaran/test-definitions.git
-          from: git
-          path: android/echo-pass-fail-error-test.yaml
-          name: echo-pass-fail-error-test
+- test:
+    timeout:
+      minutes: 5
+    definitions:
+    - repository: git://git.linaro.org/people/senthil.kumaran/test-definitions.git
+      from: git
+      path: android/echo-pass-fail-error-test.yaml
+      name: echo-pass-fail-error-test

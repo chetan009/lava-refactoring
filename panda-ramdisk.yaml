@@ -1,5 +1,3 @@
-# Sample JOB definition for a u-boot job
-
 device_type: panda
 
 job_name: panda-uboot-ramdisk
@@ -12,9 +10,9 @@ timeouts:
     minutes: 2
 priority: medium
 visibility: public
-actions:
 
-  - deploy:
+actions:
+- deploy:
      timeout:
        minutes: 2
      to: tftp
@@ -25,25 +23,25 @@ actions:
      os: oe
      dtb: http://images.validation.linaro.org/functional-test-images/panda/omap4-panda-es.dtb
 
-  - boot:
+- boot:
      method: u-boot
      commands: ramdisk
      type: bootm
-     prompts: ["root@debian:", 'linaro-test']
+     prompts:
+     - "root@debian:"
+     - 'linaro-test'
      timeout:
        minutes: 4
 
-  - test:
-     failure_retry: 3
-     name: kvm-basic-singlenode  # is not present, use "test $N"
+- test:
      timeout:
        minutes: 5 # uses install:deps, so takes longer than singlenode01
      definitions:
-         - repository: git://git.linaro.org/qa/test-definitions.git
-           from: git
-           path: ubuntu/smoke-tests-basic.yaml
-           name: smoke-tests
-         - repository: http://git.linaro.org/lava-team/lava-functional-tests.git
-           from: git
-           path: lava-test-shell/single-node/singlenode02.yaml
-           name: singlenode-intermediate
+     - repository: git://git.linaro.org/qa/test-definitions.git
+       from: git
+       path: ubuntu/smoke-tests-basic.yaml
+       name: smoke-tests
+     - repository: http://git.linaro.org/lava-team/lava-functional-tests.git
+       from: git
+       path: lava-test-shell/single-node/singlenode02.yaml
+       name: singlenode-intermediate

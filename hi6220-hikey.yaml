@@ -1,44 +1,42 @@
-# Sample JOB definition for a hi6220-hikey
 device_type: hi6220-hikey
-job_name: hi6220-hikey-pipeline
+job_name: hi6220-hikey-android
 timeouts:
   job:
-    minutes: 60            # timeout for the whole job (default: ??h)
+    minutes: 60
   action:
-    minutes: 15         # default timeout applied for each action; can be overriden in the action itself (default: ?h)
+    minutes: 15
 priority: medium
 visibility: public
 
 actions:
-  - deploy:
-      timeout:
-        minutes: 15
-      to: fastboot
-      images:
-        ptable:
-          url: http://people.linaro.org/~senthil.kumaran/hi6220-hikey-images/ptable-aosp-4g
-        boot:
-          url: http://people.linaro.org/~senthil.kumaran/hi6220-hikey-images/boot_fat.uefi.img
-        cache:
-          url: http://people.linaro.org/~senthil.kumaran/hi6220-hikey-images/cache.img
-        userdata:
-          url: http://people.linaro.org/~senthil.kumaran/hi6220-hikey-images/userdata-4gb.img
-      os: android
+- deploy:
+    timeout:
+      minutes: 15
+    to: fastboot
+    images:
+      ptable:
+        url: http://people.linaro.org/~senthil.kumaran/hi6220-hikey-images/ptable-aosp-4g
+      boot:
+        url: http://people.linaro.org/~senthil.kumaran/hi6220-hikey-images/boot_fat.uefi.img
+      cache:
+        url: http://people.linaro.org/~senthil.kumaran/hi6220-hikey-images/cache.img
+      userdata:
+        url: http://people.linaro.org/~senthil.kumaran/hi6220-hikey-images/userdata-4gb.img
+    os: android
 
-  - boot:
-      prompts: ['shell@hikey']
-      timeout:
-        minutes: 15
-      method: uefi-menu
-      commands: fastboot
+- boot:
+    prompts:
+    - 'shell@hikey'
+    timeout:
+      minutes: 15
+    method: uefi-menu
+    commands: fastboot
 
-  - test:
-      failure_retry: 3
-      name: hi6220-hikey-basic
-      timeout:
-        minutes: 10
-      definitions:
-        - repository: git://git.linaro.org/people/senthil.kumaran/test-definitions.git
-          from: git
-          path: android/echo-pass-fail-error-test.yaml
-          name: echo-pass-fail-error-test
+- test:
+    timeout:
+      minutes: 10
+    definitions:
+    - repository: git://git.linaro.org/people/senthil.kumaran/test-definitions.git
+      from: git
+      path: android/echo-pass-fail-error-test.yaml
+      name: echo-pass-fail-error-test

@@ -1,8 +1,6 @@
-# Sample JOB definition for a u-boot job
-
 device_type: beaglebone-black
 
-job_name: bbb-armmp-ramdisk
+job_name: bbb-armmp-ramdisk-intermediate
 timeouts:
   job:
     minutes: 15
@@ -14,41 +12,43 @@ priority: medium
 visibility: public
 
 actions:
+- deploy:
+    timeout:
+      minutes: 2
+    to: tftp
+    # Based on the blog entry: Validating ARMMP device tree blobs
+    # http://linux.codehelp.co.uk/?p=90
+    kernel: http://people.linaro.org/~neil.williams/armmp/lava/vmlinuz-3.16.0-4-armmp
+    ramdisk: http://people.linaro.org/~neil.williams/armmp/lava/initrd.img-armmp.cpio.gz.u-boot
+    # downloaded ramdisk already has a u-boot header
+    # this needs to be removed to unpack ramdisk & insert the test overlay
+    ramdisk-header: u-boot
+    # the bootloader needs a u-boot header on the modified ramdisk
+    ramdisk-add-header: u-boot
+    os: oe
+    modules: http://people.linaro.org/~neil.williams/armmp/lava/modules.tgz
+    dtb: http://people.linaro.org/~neil.williams/armmp/lava/dtbs/am335x-boneblack.dtb
 
-  - deploy:
-     timeout:
-       minutes: 2
-     to: tftp
-     kernel: http://people.linaro.org/~neil.williams/armmp/lava/vmlinuz-3.16.0-4-armmp
-     ramdisk: http://people.linaro.org/~neil.williams/armmp/lava/initrd.img-armmp.cpio.gz.u-boot
-     ramdisk-header: u-boot
-     ramdisk-add-header: u-boot
-     os: oe
-     modules: http://people.linaro.org/~neil.williams/armmp/lava/modules.tgz
-     dtb: http://people.linaro.org/~neil.williams/armmp/lava/dtbs/am335x-boneblack.dtb
+- boot:
+    method: u-boot
+    commands: ramdisk
+    type: bootz
+    prompts:
+    # escape the brackets to ensure that the prompt does not match
+    # kernel debug lines which may mention initramfs
+    - '\(initramfs\)'
+    timeout:
+      minutes: 2
 
-  - boot:
-     method: u-boot
-     commands: ramdisk
-     type: bootz
-     prompts: ['\(initramfs\)']
-     parameters:
-       shutdown-message: "reboot: Restarting system"
-     timeout:
-       minutes: 2
-
-  - test:
-     failure_retry: 3
-     name: bbb-armmp-ramdisk-singlenode-intermediate
-     timeout:
-       minutes: 5
-     definitions:
-         - repository: git://git.linaro.org/qa/test-definitions.git
-           from: git
-           path: ubuntu/smoke-tests-basic.yaml
-           name: smoke-tests
-         - repository: http://git.linaro.org/lava-team/lava-functional-tests.git
-           from: git
-           path: lava-test-shell/single-node/singlenode02.yaml
-           name: singlenode-intermediate
-
+- test:
+    timeout:
+      minutes: 5
+    definitions:
+    - repository: git://git.linaro.org/qa/test-definitions.git
+      from: git
+      path: ubuntu/smoke-tests-basic.yaml
+      name: smoke-tests
+    - repository: http://git.linaro.org/lava-team/lava-functional-tests.git
+      from: git
+      path: lava-test-shell/single-node/singlenode02.yaml
+      name: singlenode-intermediate

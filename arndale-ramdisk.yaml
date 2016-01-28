@@ -14,29 +14,38 @@ visibility: public
 actions:
 - deploy:
     dtb: http://images.validation.linaro.org/functional-test-images/arndale/exynos5250-arndale.dtb
+    # note: this kernel lacks support for a jessie rootfs
     kernel: http://images.validation.linaro.org/functional-test-images/arndale/uImage
     ramdisk: http://people.linaro.org/~neil.williams/armmp/lava/initrd.img-armmp.cpio.gz.u-boot
+    # downloaded ramdisk already has a u-boot header
+    # this needs to be removed to unpack ramdisk & insert the test overlay
     ramdisk-header: u-boot
+    # the bootloader needs a u-boot header on the modified ramdisk
+    # offered over tftp.
     ramdisk-add-header: u-boot
     os: oe
     to: tftp
+
 - boot:
-    commands: ramdisk
     method: u-boot
-    prompts: ['\(initramfs\)']
-    timeout: {minutes: 5}
+    commands: ramdisk
     type: bootm
+    prompts: 
+    # escape the brackets to ensure that the prompt does not match
+    # kernel debug lines which may mention initramfs
+    - '\(initramfs\)'
+    timeout: 
+      minutes: 5
+
 - test:
-   failure_retry: 3
-   name: bbb-armmp-ramdisk-singlenode-intermediate
-   timeout:
-     minutes: 5
-   definitions:
-     - repository: git://git.linaro.org/qa/test-definitions.git
-       from: git
-       path: ubuntu/smoke-tests-basic.yaml
-       name: smoke-tests
-     - repository: http://git.linaro.org/lava-team/lava-functional-tests.git
-       from: git
-       path: lava-test-shell/single-node/singlenode02.yaml
-       name: singlenode-intermediate
+    timeout:
+      minutes: 5
+    definitions:
+    - from: git
+      repository: git://git.linaro.org/qa/test-definitions.git
+      path: ubuntu/smoke-tests-basic.yaml
+      name: smoke-tests
+    - from: git
+      repository: http://git.linaro.org/lava-team/lava-functional-tests.git
+      path: lava-test-shell/single-node/singlenode02.yaml
+      name: singlenode-intermediate

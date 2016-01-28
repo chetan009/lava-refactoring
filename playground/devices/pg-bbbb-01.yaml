@@ -1,6 +1,0 @@
-{% extends 'beaglebone-black.yaml' %}
-{% set connection_command = "telnet playgroundmaster 7018" %}
-{% set hard_reset_command = "/usr/bin/pduclient --daemon services --hostname pdu09 --command reboot --port 04" %}
-{% set power_off_command = "/usr/bin/pduclient --daemon services --hostname pdu09 --command off --port 04" %}
-{% set power_on_command = "/usr/bin/pduclient --daemon services --hostname pdu09 --command on --port 04" %}
-

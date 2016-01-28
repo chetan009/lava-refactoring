@@ -1,3 +1,13 @@
+device_type: cubietruck
+job_name: 3.16.0-4-armmp-ramdisk
+priority: medium
+visibility: public
+timeouts:
+  job:
+    minutes: 15
+  action:
+    minutes: 5
+
 actions:
 - deploy:
     dtb: http://people.linaro.org/~neil.williams/armmp/lava/dtbs/sun7i-a20-cubietruck.dtb
@@ -7,15 +17,19 @@ actions:
     ramdisk: http://people.linaro.org/~neil.williams/armmp/lava/initrd.img-armmp.cpio.gz.u-boot
     ramdisk-header: u-boot
     ramdisk-add-header: u-boot
-    timeout: {minutes: 2}
+    timeout:
+      minutes: 2
     to: tftp
+
 - boot:
     commands: ramdisk
     method: u-boot
-    prompts: ['initramfs']
-    parameters: {shutdown-message: 'reboot: Restarting system'}
-    timeout: {minutes: 2}
+    prompts:
+    - 'initramfs'
+    timeout:
+      minutes: 2
     type: bootz
+
 - test:
     definitions:
     - from: inline
@@ -26,24 +40,27 @@ actions:
           description: modprobe network and sata
           format: Lava-Test Test Definition 1.0
           name: modules
-          os: [debian]
-          scope: [functional]
+          os:
+          - debian
+          scope:
+          - functional
         run:
-          steps: [dmesg -n 5, lava-test-case udevadm --shell udevadm hwdb --update,
-            lava-test-case depmod --shell depmod -a, lava-test-case modprobe --shell
-              modprobe stmmac, lava-test-case sata-mod --shell modprobe -a ahci_sunxi
-              sd_mod sg ext4, lava-test-case ifconfig --shell ifconfig eth0 up, lava-test-case
-              udhcpc --shell udhcpc, dmesg -n 7]
-    - {from: git, name: smoke-tests, path: ubuntu/smoke-tests-basic.yaml, repository: 'git://git.linaro.org/qa/test-definitions.git'}
-    - {from: git, name: singlenode-intermediate, path: lava-test-shell/single-node/singlenode02.yaml,
-      repository: 'http://git.linaro.org/lava-team/lava-functional-tests.git'}
-    failure_retry: 3
-    name: cubietruck-basic-singlenode
-    timeout: {minutes: 5}
-device_type: cubietruck
-visibility: public
-job_name: 3.16.0-4-armmp-ramdisk
-priority: medium
-timeouts:
-  action: {minutes: 5}
-  job: {minutes: 15}
+          steps: 
+          - dmesg -n 5
+          - lava-test-case udevadm --shell udevadm hwdb --update
+          - lava-test-case depmod --shell depmod -a
+          - lava-test-case modprobe --shell modprobe stmmac
+          - lava-test-case sata-mod --shell modprobe -a ahci_sunxi sd_mod sg ext4
+          - lava-test-case ifconfig --shell ifconfig eth0 up
+          - lava-test-case udhcpc --shell udhcpc
+          - dmesg -n 7
+    - from: git
+      name: smoke-tests
+      path: ubuntu/smoke-tests-basic.yaml
+      repository: 'git://git.linaro.org/qa/test-definitions.git'
+    - from: git
+      name: singlenode-intermediate
+      path: lava-test-shell/single-node/singlenode02.yaml
+      repository: 'http://git.linaro.org/lava-team/lava-functional-tests.git'
+    timeout:
+      minutes: 5

@@ -1,6 +1,0 @@
-{% extends 'wandboard.yaml' %}
-{% set connection_command = "telnet playgroundmaster 7013" %}
-{% set hard_reset_command = "/usr/bin/pduclient --daemon services --hostname pdu09 --command reboot --port 03" %}
-{% set power_off_command = "/usr/bin/pduclient --daemon services --hostname pdu09 --command off --port 03" %}
-{% set power_on_command = "/usr/bin/pduclient --daemon services --hostname pdu09 --command on --port 03" %}
-

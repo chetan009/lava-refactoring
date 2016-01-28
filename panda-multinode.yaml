@@ -24,8 +24,10 @@ priority: medium
 visibility: public
 
 actions:
-
-  - deploy:
+- deploy:
+     role:
+     - server
+     - client
      timeout:
        minutes: 2
      to: tftp
@@ -35,29 +37,25 @@ actions:
      ramdisk-add-header: u-boot
      os: oe
      dtb: http://images.validation.linaro.org/functional-test-images/panda/omap4-panda-es.dtb
+
+- boot:
      role:
      - server
      - client
-
-  - boot:
      timeout:
        minutes: 4
      method: u-boot
      commands: ramdisk
-     prompts: ['linaro-test']
      type: bootm
-     role:
-     - server
-     - client
+     prompts:
+     - 'linaro-test'
 
-  - test:
-     failure_retry: 3
-     name: panda-intermediate-multinode
-     definitions:
-         - repository: http://git.linaro.org/lava-team/lava-functional-tests.git
-           from: git
-           path: lava-test-shell/multi-node/multinode02.yaml
-           name: multinode-intermediate
+- test:
      role:
      - server
      - client
+     definitions:
+     - repository: http://git.linaro.org/lava-team/lava-functional-tests.git
+       from: git
+       path: lava-test-shell/multi-node/multinode02.yaml
+       name: multinode-intermediate

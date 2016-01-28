@@ -14,7 +14,9 @@ visibility: public
 actions:
 - deploy:
     dtb: http://images.validation.linaro.org/functional-test-images/arndale/exynos5250-arndale.dtb
+    # note: this kernel lacks support for a jessie rootfs
     kernel: http://images.validation.linaro.org/functional-test-images/arndale/uImage
+    # trusty rootfs 'linaro-nano:'
     nfsrootfs: http://people.linaro.org/~neil.williams/linaro-trusty-nano.tar.gz
     rootfs_compression: gz
     os: debian
@@ -22,19 +24,20 @@ actions:
 - boot:
     commands: nfs
     method: u-boot
-    prompts: ['root@linaro-nano:']
-    timeout: {minutes: 5}
+    prompts:
+    - 'root@linaro-nano:'
+    timeout:
+      minutes: 5
     type: bootm
 - test:
-   name: arndale-ramdisk-singlenode-intermediate
    timeout:
      minutes: 5
    definitions:
-     - repository: git://git.linaro.org/qa/test-definitions.git
-       from: git
+     - from: git
+      repository: git://git.linaro.org/qa/test-definitions.git
        path: ubuntu/smoke-tests-basic.yaml
        name: smoke-tests
-     - repository: http://git.linaro.org/lava-team/lava-functional-tests.git
-       from: git
+     - from: git
+       repository: http://git.linaro.org/lava-team/lava-functional-tests.git
        path: lava-test-shell/single-node/singlenode02.yaml
        name: singlenode-intermediate

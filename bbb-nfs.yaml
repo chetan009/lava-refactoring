@@ -1,5 +1,3 @@
-# Sample JOB definition for a u-boot job
-
 device_type: beaglebone-black
 
 job_name: nfs-bbb
@@ -23,18 +21,17 @@ actions:
     rootfs_compression: gz
     os: debian
     dtb: http://images.validation.linaro.org/functional-test-images/bbb/am335x-bone.dtb
+
 - boot:
-   timeout:
-     minutes: 3
    method: u-boot
    commands: nfs
    type: bootz
-   prompts: ['root@linaro:']
-   parameters:
-     shutdown-message: "reboot: Restarting system"
+   prompts:
+   - 'root@linaro:'
+   timeout:
+     minutes: 3
+
 - test:
-   failure_retry: 3
-   name: bbb-armmp-ramdisk-singlenode-intermediate
    timeout:
      minutes: 5
    definitions:

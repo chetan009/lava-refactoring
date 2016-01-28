@@ -1,5 +1,3 @@
-# Sample JOB definition for a u-boot job
-
 device_type: beaglebone-black
 
 job_name: bbb-ramdisk-uboot-oe
@@ -12,39 +10,38 @@ priority: medium
 visibility: public
 
 actions:
+- deploy:
+    timeout:
+      minutes: 4
+    to: tftp
+    kernel: http://images.validation.linaro.org/functional-test-images/bbb/zImage
+    ramdisk: http://images.validation.linaro.org/functional-test-images/common/linaro-image-minimal-initramfs-genericarmv7a.cpio.gz.u-boot
+    # downloaded ramdisk already has a u-boot header
+    # this needs to be removed to unpack ramdisk & insert the test overlay
+    ramdisk-header: u-boot
+    # the bootloader needs a u-boot header on the modified ramdisk
+    ramdisk-add-header: u-boot
+    os: oe
+    dtb: http://images.validation.linaro.org/functional-test-images/bbb/am335x-bone.dtb
 
-  - deploy:
-     timeout:
-       minutes: 4
-     to: tftp
-     kernel: http://images.validation.linaro.org/functional-test-images/bbb/zImage
-     ramdisk: http://images.validation.linaro.org/functional-test-images/common/linaro-image-minimal-initramfs-genericarmv7a.cpio.gz.u-boot
-     ramdisk-header: u-boot
-     ramdisk-add-header: u-boot
-     os: oe
-     dtb: http://images.validation.linaro.org/functional-test-images/bbb/am335x-bone.dtb
+- boot:
+    method: u-boot
+    commands: ramdisk
+    type: bootz
+    prompts:
+    - 'linaro-test'
+    timeout:
+      minutes: 2
 
-  - boot:
-     method: u-boot
-     commands: ramdisk
-     type: bootz
-     prompts: ['linaro-test']
-     parameters:
-       shutdown-message: "reboot: Restarting system"
-     timeout:
-       minutes: 2
-
-  - test:
-     failure_retry: 3
-     name: kvm-basic-singlenode
-     timeout:
-       minutes: 5
-     definitions:
-         - repository: git://git.linaro.org/qa/test-definitions.git
-           from: git
-           path: ubuntu/smoke-tests-basic.yaml
-           name: smoke-tests
-         - repository: http://git.linaro.org/lava-team/lava-functional-tests.git
-           from: git
-           path: lava-test-shell/single-node/singlenode02.yaml
-           name: singlenode-intermediate
+- test:
+    timeout:
+      minutes: 5
+    definitions:
+     - repository: git://git.linaro.org/qa/test-definitions.git
+       from: git
+       path: ubuntu/smoke-tests-basic.yaml
+       name: smoke-tests
+     - repository: http://git.linaro.org/lava-team/lava-functional-tests.git
+       from: git
+       path: lava-test-shell/single-node/singlenode02.yaml
+       name: singlenode-intermediate
