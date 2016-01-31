@@ -34,7 +34,7 @@ actions:
      minutes: 5
    definitions:
      - from: git
-      repository: git://git.linaro.org/qa/test-definitions.git
+       repository: git://git.linaro.org/qa/test-definitions.git
        path: ubuntu/smoke-tests-basic.yaml
        name: smoke-tests
      - from: git
