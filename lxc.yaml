@@ -11,7 +11,7 @@ protocols:
   lava-lxc:
     name: pipeline-lxc-test
     distribution: debian
-    release: wheezy
+    release: sid
     arch: amd64
 
 actions:
