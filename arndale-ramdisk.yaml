@@ -13,16 +13,20 @@ visibility: public
 
 actions:
 - deploy:
-    dtb: http://images.validation.linaro.org/functional-test-images/arndale/exynos5250-arndale.dtb
-    # note: this kernel lacks support for a jessie rootfs
-    kernel: http://images.validation.linaro.org/functional-test-images/arndale/uImage
-    ramdisk: http://people.linaro.org/~neil.williams/armmp/lava/initrd.img-armmp.cpio.gz.u-boot
-    # downloaded ramdisk already has a u-boot header
-    # this needs to be removed to unpack ramdisk & insert the test overlay
-    ramdisk-header: u-boot
-    # the bootloader needs a u-boot header on the modified ramdisk
-    # offered over tftp.
-    ramdisk-add-header: u-boot
+    dtb:
+      url: http://images.validation.linaro.org/functional-test-images/arndale/exynos5250-arndale.dtb
+    kernel:
+      # note: this kernel lacks support for a jessie rootfs
+      url: http://images.validation.linaro.org/functional-test-images/arndale/uImage
+    ramdisk:
+      url: http://people.linaro.org/~neil.williams/armmp/lava/initrd.img-armmp.cpio.gz.u-boot
+      compression: gz
+      # downloaded ramdisk already has a u-boot header
+      # this needs to be removed to unpack ramdisk & insert the test overlay
+      header: u-boot
+      # the bootloader needs a u-boot header on the modified ramdisk
+      # offered over tftp.
+      add-header: u-boot
     os: oe
     to: tftp
 

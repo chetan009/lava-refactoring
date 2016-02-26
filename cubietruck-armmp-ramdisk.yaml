@@ -14,13 +14,19 @@ actions:
     timeout:
       minutes: 2
     to: tftp
-    kernel: http://people.linaro.org/~neil.williams/armmp/lava/vmlinuz-3.16.0-4-armmp
-    ramdisk: http://people.linaro.org/~neil.williams/armmp/lava/initrd.img-armmp.cpio.gz.u-boot
-    ramdisk-header: u-boot
-    ramdisk-add-header: u-boot
+    kernel:
+      url: http://people.linaro.org/~neil.williams/armmp/lava/vmlinuz-3.16.0-4-armmp
+    ramdisk:
+      url: http://people.linaro.org/~neil.williams/armmp/lava/initrd.img-armmp.cpio.gz.u-boot
+      header: u-boot
+      add-header: u-boot
+      compression: gz
     os: oe
-    modules: http://people.linaro.org/~neil.williams/armmp/lava/modules.tgz
-    dtb: http://people.linaro.org/~neil.williams/armmp/lava/dtbs/sun7i-a20-cubietruck.dtb
+    modules:
+      url: http://people.linaro.org/~neil.williams/armmp/lava/modules.tgz
+      compression: gz
+    dtb:
+      url: http://people.linaro.org/~neil.williams/armmp/lava/dtbs/sun7i-a20-cubietruck.dtb
 
 - boot:
     method: u-boot

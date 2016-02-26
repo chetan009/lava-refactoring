@@ -18,16 +18,22 @@ actions:
     to: tftp
     # Based on the blog entry: Validating ARMMP device tree blobs
     # http://linux.codehelp.co.uk/?p=90
-    kernel: http://people.linaro.org/~neil.williams/armmp/lava/vmlinuz-3.16.0-4-armmp
-    ramdisk: http://people.linaro.org/~neil.williams/armmp/lava/initrd.img-armmp.cpio.gz.u-boot
-    # downloaded ramdisk already has a u-boot header
-    # this needs to be removed to unpack ramdisk & insert the test overlay
-    ramdisk-header: u-boot
-    # the bootloader needs a u-boot header on the modified ramdisk
-    ramdisk-add-header: u-boot
+    kernel:
+      url: http://people.linaro.org/~neil.williams/armmp/lava/vmlinuz-3.16.0-4-armmp
+    ramdisk:
+      url: http://people.linaro.org/~neil.williams/armmp/lava/initrd.img-armmp.cpio.gz.u-boot
+      compression: gz
+      # downloaded ramdisk already has a u-boot header
+      # this needs to be removed to unpack ramdisk & insert the test overlay
+      header: u-boot
+      # the bootloader needs a u-boot header on the modified ramdisk
+      add-header: u-boot
     os: oe
-    modules: http://people.linaro.org/~neil.williams/armmp/lava/modules.tgz
-    dtb: http://people.linaro.org/~neil.williams/armmp/lava/dtbs/am335x-boneblack.dtb
+    modules:
+      url: http://people.linaro.org/~neil.williams/armmp/lava/modules.tgz
+      compression: gz
+    dtb:
+      url: http://people.linaro.org/~neil.williams/armmp/lava/dtbs/am335x-boneblack.dtb
 
 - boot:
     method: u-boot
