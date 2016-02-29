@@ -1,0 +1,52 @@
+device_type: beaglebone-black
+
+job_name: standard-bbb-ramdisk
+timeouts:
+  job:
+    minutes: 15
+  action:
+    minutes: 5
+priority: medium
+visibility: public
+
+actions:
+- deploy:
+    timeout:
+      minutes: 4
+    to: tftp
+    kernel:
+      url: http://images.validation.linaro.org/functional-test-images/bbb/zImage
+    ramdisk: 
+      url: http://snapshots.linaro.org/components/lava/standard/debian/busybox-initramfs/armhf/4/initramfs-armhf.cpio.gz
+      compression: gz
+      md5sum: d5a1bbc825f275a43afb2d79ff80bea3
+      # downloaded ramdisk does not have a u-boot header
+      # the bootloader needs a u-boot header on the modified ramdisk
+      add-header: u-boot
+    os: oe  # minimal busybox, Debian static build
+    dtb:
+      url: http://images.validation.linaro.org/functional-test-images/bbb/am335x-bone.dtb
+
+- boot:
+    method: u-boot
+    commands: ramdisk
+    type: bootz
+    parameters:
+      shutdown-message: "reboot: Restarting system"
+    prompts:
+    - 'root@busybox:'
+    timeout:
+      minutes: 2
+
+- test:
+    timeout:
+      minutes: 5
+    definitions:
+     - repository: git://git.linaro.org/qa/test-definitions.git
+       from: git
+       path: ubuntu/smoke-tests-basic.yaml
+       name: smoke-tests
+     - repository: http://git.linaro.org/lava-team/lava-functional-tests.git
+       from: git
+       path: lava-test-shell/single-node/singlenode02.yaml
+       name: singlenode-intermediate
