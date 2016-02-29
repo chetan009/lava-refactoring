@@ -1,0 +1,80 @@
+device_type: qemu
+job_name: upgrade-jessie-to-stretch
+
+timeouts:
+  job:
+    minutes: 45
+  action:
+    minutes: 2
+  connection:
+    minutes: 2
+priority: medium
+visibility: public
+
+context:
+  arch: amd64
+
+actions:
+- deploy:
+    timeout:
+      minutes: 2
+    to: tmpfs
+    images: 
+        rootfs: 
+          image_arg: -drive format=raw,file={rootfs}
+          url: http://snapshots.linaro.org/components/lava/standard/debian/jessie/amd64/4/large-stable.img.gz
+          compression: gz
+    os: debian
+    root_partition: 1
+
+- boot:
+    method: qemu
+    media: tmpfs
+    prompts:
+    - "root@debian:"
+    auto_login:
+      login_prompt: "login:"
+      username: root
+
+- test:
+    timeout:
+      minutes: 35
+    definitions:
+    - repository:
+        metadata:
+          format: Lava-Test Test Definition 1.0
+          name: jessie-stretch-upgrade
+          description: "Install jessie base and upgrade to staging"
+        run:
+          steps:
+          - apt -y install postgresql
+          - DEBIAN_FRONTEND=noninteractive apt-get -y install lava-dispatcher lava-server
+          - dpkg -l lava-server
+          - lava-test-case ensite --shell a2ensite lava-server
+          - a2dissite 000-default
+          - apache2ctl restart
+          # use current staging as the check before an upload to sid migrates to stretch
+          - wget http://images.validation.linaro.org/staging-repo/staging-repo.key.asc
+          - apt-key add staging-repo.key.asc
+          - echo "deb http://images.validation.linaro.org/staging-repo sid main" > /etc/apt/sources.list.d/lava-staging.list
+          - apt -q update
+          - apt -y upgrade
+          - apt -y dist-upgrade
+          # once helpers are available, add a device type, device & device dictionary here
+          - lava-test-case devicedict --shell lava-server manage device-dictionary --help
+          - lava-test-case env --shell cat /etc/lava-server/env.yaml
+          - lava-test-case server --shell service lava-server status
+          - lava-test-case master --shell service lava-master status
+          - lava-test-case slave --shell service lava-slave status
+          - dpkg -l lava-server
+      from: inline
+      name: stretch-upgrade-inline
+      path: inline/stretch-upgrade.yaml
+    - repository: git://git.linaro.org/qa/test-definitions.git
+      from: git
+      path: ubuntu/smoke-tests-basic.yaml
+      name: smoke-tests
+    - repository: http://git.linaro.org/lava-team/lava-functional-tests.git
+      from: git
+      path: lava-test-shell/single-node/singlenode03.yaml
+      name: singlenode-advanced
