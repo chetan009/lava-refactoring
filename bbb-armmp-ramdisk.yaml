@@ -7,33 +7,32 @@ timeouts:
   action:
     minutes: 5
   connection:
-    minutes: 1
+    minutes: 2
 priority: medium
 visibility: public
 
 actions:
 - deploy:
     timeout:
-      minutes: 2
+      minutes: 5
     to: tftp
     # Based on the blog entry: Validating ARMMP device tree blobs
     # http://linux.codehelp.co.uk/?p=90
+    # Now ported to LAVA standard builds.
     kernel:
-      url: http://people.linaro.org/~neil.williams/armmp/lava/vmlinuz-3.16.0-4-armmp
+      url: http://snapshots.linaro.org/components/lava/standard/debian/jessie/armhf/1/vmlinuz
     ramdisk:
-      url: http://people.linaro.org/~neil.williams/armmp/lava/initrd.img-armmp.cpio.gz.u-boot
+      url: http://snapshots.linaro.org/components/lava/standard/debian/jessie/armhf/1/initramfs.cpio.gz
       compression: gz
-      # downloaded ramdisk already has a u-boot header
-      # this needs to be removed to unpack ramdisk & insert the test overlay
-      header: u-boot
+      # downloaded ramdisk already has no u-boot header
       # the bootloader needs a u-boot header on the modified ramdisk
       add-header: u-boot
     os: oe
     modules:
-      url: http://people.linaro.org/~neil.williams/armmp/lava/modules.tgz
+      url: http://snapshots.linaro.org/components/lava/standard/debian/jessie/armhf/1/modules.tar.gz
       compression: gz
     dtb:
-      url: http://people.linaro.org/~neil.williams/armmp/lava/dtbs/am335x-boneblack.dtb
+      url: http://snapshots.linaro.org/components/lava/standard/debian/jessie/armhf/1/dtbs/am335x-boneblack.dtb
 
 - boot:
     method: u-boot
