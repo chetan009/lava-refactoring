@@ -8,8 +8,10 @@ job_name: qemu-amd64-standard-sid
 
 timeouts:
   job:
-    minutes: 5
+    minutes: 10
   action:
+    minutes: 2
+  connection:
     minutes: 2
 priority: medium
 visibility: public
@@ -25,7 +27,8 @@ actions:
     images: 
         rootfs: 
           image_arg: -drive format=raw,file={rootfs}
-          url: http://snapshots.linaro.org/components/lava/standard/debian/sid/amd64/latest/large-sid.img.gz
+          url: http://snapshots.linaro.org/components/lava/standard/debian/sid/amd64/6/large-sid.img.gz
+          sha256sum: 2d22d752bb869fe94b590657ef6f24d94ef6d75259453f8a9b823c039bad88e0
           compression: gz
     os: debian
     root_partition: 1
@@ -41,26 +44,22 @@ actions:
 
 - test:
     timeout:
-      minutes: 5
+      minutes: 9
     definitions:
     - repository:
         metadata:
           format: Lava-Test Test Definition 1.0
-          name: smoke-tests-basic
-          description: "Basic system test command for Linaro Ubuntu images"
+          name: standard-debian-sid
+          description: "Basic system test command for Debian Unstable"
         run:
           steps:
-          # needed until vmdebootstrap 1.4 is available in jessie-backports
-          - echo 'iface ens3 inet dhcp' > /etc/network/interfaces.d/lava
-          - ifup ens3
-          - systemctl enable systemd-networkd
-          - apt update
-          - apt upgrade
-          - apt dist-upgrade
+          - apt-get -q update
+          - apt -y upgrade
+          - apt -y dist-upgrade
           - printenv
       from: inline
-      name: env-dut-inline
-      path: inline/env-dut.yaml
+      name: debian-sid-inline
+      path: inline/debian-sid.yaml
     - repository: git://git.linaro.org/qa/test-definitions.git
       from: git
       path: ubuntu/smoke-tests-basic.yaml
