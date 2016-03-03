@@ -1,6 +1,8 @@
-device_type: beaglebone-black
+device_type: cubietruck
 
-job_name: standard-armmp-nfs
+# NFS fails on panda and arndale.
+
+job_name: standard-armmp-nfs-cubietruck
 timeouts:
   job:
     minutes: 10
@@ -31,7 +33,7 @@ actions:
       compression: gz
     os: oe
     dtb:
-      url: http://snapshots.linaro.org/components/lava/standard/debian/jessie/armhf/1/dtbs/am335x-boneblack.dtb
+      url: http://snapshots.linaro.org/components/lava/standard/debian/jessie/armhf/1/dtbs/sun7i-a20-cubietruck.dtb
 
 - boot:
     method: u-boot
