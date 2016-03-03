@@ -5,6 +5,8 @@ timeouts:
     hours: 1
   action:
     minutes: 5
+  connection:
+    minutes: 1
 priority: medium
 visibility: public
 context:
