@@ -31,7 +31,7 @@ actions:
     nfsrootfs:
       url: http://snapshots.linaro.org/components/lava/standard/debian/jessie/armhf/1/jessie-armhf-nfs.tar.gz
       compression: gz
-    os: oe
+    os: debian
     dtb:
       url: http://snapshots.linaro.org/components/lava/standard/debian/jessie/armhf/1/dtbs/sun7i-a20-cubietruck.dtb
 

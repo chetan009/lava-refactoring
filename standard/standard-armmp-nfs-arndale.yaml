@@ -1,22 +1,21 @@
-device_type: beaglebone-black
+device_type: arndale
 
-# NFS fails on panda and arndale.
+job_name: standard-arndale-armmp-ramdisk
 
-job_name: standard-armmp-nfs-bbb
 timeouts:
   job:
-    minutes: 10
+    minutes: 15
   action:
     minutes: 5
   connection:
-    minutes: 2
+    minutes: 1
 priority: medium
 visibility: public
 
 actions:
 - deploy:
     timeout:
-      minutes: 4
+      minutes: 2
     to: tftp
     kernel:
       url: http://snapshots.linaro.org/components/lava/standard/debian/jessie/armhf/1/vmlinuz
@@ -31,9 +30,10 @@ actions:
     nfsrootfs:
       url: http://snapshots.linaro.org/components/lava/standard/debian/jessie/armhf/1/jessie-armhf-nfs.tar.gz
       compression: gz
-    os: debian
+    # despite this being a Debian initramfs, it is not a complete Debian rootfs, so use oe compatibility
+    os: oe
     dtb:
-      url: http://snapshots.linaro.org/components/lava/standard/debian/jessie/armhf/1/dtbs/am335x-boneblack.dtb
+      url: http://snapshots.linaro.org/components/lava/standard/debian/jessie/armhf/1/dtbs/exynos5250-arndale.dtb
 
 - boot:
     method: u-boot
@@ -49,9 +49,13 @@ actions:
 
 - test:
     timeout:
-      minutes: 5
+      minutes: 5 # uses install:deps, so takes longer than singlenode01
     definitions:
     - repository: git://git.linaro.org/qa/test-definitions.git
       from: git
       path: ubuntu/smoke-tests-basic.yaml
       name: smoke-tests
+    - repository: http://git.linaro.org/lava-team/lava-functional-tests.git
+      from: git
+      path: lava-test-shell/single-node/singlenode02.yaml
+      name: singlenode-intermediate

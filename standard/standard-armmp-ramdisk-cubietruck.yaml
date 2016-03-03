@@ -1,8 +1,8 @@
-device_type: beaglebone-black
+device_type: cubietruck
 
 # NFS fails on panda and arndale.
 
-job_name: standard-armmp-nfs-bbb
+job_name: standard-armmp-ramdisk-cubietruck
 timeouts:
   job:
     minutes: 10
@@ -28,22 +28,19 @@ actions:
     modules:
       url: http://snapshots.linaro.org/components/lava/standard/debian/jessie/armhf/1/modules.tar.gz
       compression: gz
-    nfsrootfs:
-      url: http://snapshots.linaro.org/components/lava/standard/debian/jessie/armhf/1/jessie-armhf-nfs.tar.gz
-      compression: gz
-    os: debian
+    # despite this being a Debian initramfs, it is not a complete Debian rootfs, so use oe compatibility
+    os: oe
     dtb:
-      url: http://snapshots.linaro.org/components/lava/standard/debian/jessie/armhf/1/dtbs/am335x-boneblack.dtb
+      url: http://snapshots.linaro.org/components/lava/standard/debian/jessie/armhf/1/dtbs/sun7i-a20-cubietruck.dtb
 
 - boot:
     method: u-boot
-    commands: nfs
+    commands: ramdisk
     type: bootz
-    auto_login:
-      login_prompt: 'login:'
-      username: root
     prompts:
-    - 'root@jessie:'
+    # escape the brackets to ensure that the prompt does not match
+    # kernel debug lines which may mention initramfs
+    - '\(initramfs\)'
     timeout:
       minutes: 2
 

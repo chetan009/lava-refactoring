@@ -1,47 +1,45 @@
-device_type: beaglebone-black
+device_type: panda
 
-job_name: bbb-armmp-ramdisk-intermediate
+job_name: standard-armmp-ramdisk-panda
+
 timeouts:
   job:
     minutes: 15
   action:
     minutes: 5
   connection:
-    minutes: 2
+    minutes: 3
 priority: medium
 visibility: public
 
 actions:
 - deploy:
     timeout:
-      minutes: 5
+      minutes: 3
     to: tftp
-    # Based on the blog entry: Validating ARMMP device tree blobs
-    # http://linux.codehelp.co.uk/?p=90
-    # Now ported to LAVA standard builds.
     kernel:
       url: http://snapshots.linaro.org/components/lava/standard/debian/jessie/armhf/1/vmlinuz
     ramdisk:
       url: http://snapshots.linaro.org/components/lava/standard/debian/jessie/armhf/1/initramfs.cpio.gz
       compression: gz
-      # downloaded ramdisk already has no u-boot header
       # the bootloader needs a u-boot header on the modified ramdisk
       add-header: u-boot
-    os: oe
     modules:
       url: http://snapshots.linaro.org/components/lava/standard/debian/jessie/armhf/1/modules.tar.gz
       compression: gz
+    # despite this being a Debian initramfs, it is not a complete Debian rootfs, so use oe compatibility
+    os: oe
     dtb:
-      url: http://snapshots.linaro.org/components/lava/standard/debian/jessie/armhf/1/dtbs/am335x-boneblack.dtb
+      url: http://snapshots.linaro.org/components/lava/standard/debian/jessie/armhf/1/dtbs/omap4-panda.dtb
 
 - boot:
     method: u-boot
     commands: ramdisk
-    type: bootz
     prompts:
     # escape the brackets to ensure that the prompt does not match
     # kernel debug lines which may mention initramfs
     - '\(initramfs\)'
+    type: bootz
     timeout:
       minutes: 2
 
@@ -53,7 +51,3 @@ actions:
       from: git
       path: ubuntu/smoke-tests-basic.yaml
       name: smoke-tests
-    - repository: http://git.linaro.org/lava-team/lava-functional-tests.git
-      from: git
-      path: lava-test-shell/single-node/singlenode02.yaml
-      name: singlenode-intermediate
