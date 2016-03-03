@@ -1,47 +1,53 @@
 device_type: panda
 
-job_name: panda-uboot-health
+job_name: panda-ramdisk-health
+
 timeouts:
   job:
     minutes: 15
   action:
     minutes: 5
   connection:
-    minutes: 2
+    minutes: 3
 priority: medium
 visibility: public
 
 actions:
 - deploy:
-     timeout:
-       minutes: 2
-     to: tftp
-     kernel: http://images.validation.linaro.org/functional-test-images/panda/uImage
-     ramdisk: http://images.validation.linaro.org/functional-test-images/common/linaro-image-minimal-initramfs-genericarmv7a.cpio.gz.u-boot
-     ramdisk-header: u-boot
-     ramdisk-add-header: u-boot
-     os: oe
-     dtb: http://images.validation.linaro.org/functional-test-images/panda/omap4-panda-es.dtb
+    timeout:
+      minutes: 3
+    to: tftp
+    kernel:
+      url: http://snapshots.linaro.org/components/lava/standard/debian/jessie/armhf/1/vmlinuz
+    ramdisk:
+      url: http://snapshots.linaro.org/components/lava/standard/debian/jessie/armhf/1/initramfs.cpio.gz
+      compression: gz
+      # the bootloader needs a u-boot header on the modified ramdisk
+      add-header: u-boot
+    modules:
+      url: http://snapshots.linaro.org/components/lava/standard/debian/jessie/armhf/1/modules.tar.gz
+      compression: gz
+    # despite this being a Debian initramfs, it is not a complete Debian rootfs, so use oe compatibility
+    os: oe
+    dtb:
+      url: http://snapshots.linaro.org/components/lava/standard/debian/jessie/armhf/1/dtbs/omap4-panda.dtb
 
 - boot:
-     method: u-boot
-     commands: ramdisk
-     type: bootm
-     prompts:
-     - "root@debian:"
-     - 'linaro-test'
-     timeout:
-       minutes: 4
+    method: u-boot
+    commands: ramdisk
+    prompts:
+    # escape the brackets to ensure that the prompt does not match
+    # kernel debug lines which may mention initramfs
+    - '\(initramfs\)'
+    type: bootz
+    timeout:
+      minutes: 2
 
 - test:
-     timeout:
-       minutes: 5 # uses install:deps, so takes longer than singlenode01
-     definitions:
-     - repository: git://git.linaro.org/qa/test-definitions.git
-       from: git
-       path: ubuntu/smoke-tests-basic.yaml
-       name: smoke-tests
-     - repository: http://git.linaro.org/lava-team/lava-functional-tests.git
-       from: git
-       path: lava-test-shell/single-node/singlenode02.yaml
-       name: singlenode-intermediate
+    timeout:
+      minutes: 5
+    definitions:
+    - repository: git://git.linaro.org/qa/test-definitions.git
+      from: git
+      path: ubuntu/smoke-tests-basic.yaml
+      name: smoke-tests
