@@ -42,7 +42,7 @@ actions:
     # kernel debug lines which may mention initramfs
     - '\(initramfs\)'
     timeout:
-      minutes: 2
+      minutes: 3
 
 - test:
     timeout:
