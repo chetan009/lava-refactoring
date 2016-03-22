@@ -22,13 +22,13 @@ context:
 actions:
 - deploy:
     timeout:
-      minutes: 2
+      minutes: 3
     to: tmpfs
     images: 
         rootfs: 
           image_arg: -drive format=raw,file={rootfs}
-          url: http://snapshots.linaro.org/components/lava/standard/debian/sid/amd64/6/large-sid.img.gz
-          sha256sum: 2d22d752bb869fe94b590657ef6f24d94ef6d75259453f8a9b823c039bad88e0
+          url: http://snapshots.linaro.org/components/lava/standard/debian/sid/amd64/7/large-sid.img.gz
+          sha256sum: 42f4a314a6e5748edf42a46afe2bb519584d9d00942614992c670bce61e9b21f
           compression: gz
     os: debian
     root_partition: 1
