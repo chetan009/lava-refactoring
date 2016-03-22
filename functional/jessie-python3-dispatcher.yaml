@@ -4,7 +4,7 @@ job_name: dispatcher-python3
 
 timeouts:
   job:
-    minutes: 5
+    minutes: 15
   action:
     minutes: 2
 priority: medium
@@ -20,8 +20,8 @@ actions:
         images: 
             rootfs: 
               image_arg: -drive format=raw,file={rootfs}
-              url: http://snapshots.linaro.org/components/lava/standard/debian/jessie/amd64/5/large-stable.img.gz
-              sha256sum: 93baecd50a96d084ce2cb7e1e3b74c4e7582c4691a91b1edcb065db4d43885ff
+              url: http://snapshots.linaro.org/components/lava/standard/debian/sid/amd64/7/large-sid.img.gz
+              sha256sum: 42f4a314a6e5748edf42a46afe2bb519584d9d00942614992c670bce61e9b21f
               compression: gz
         os: debian
         root_partition: 1
@@ -33,13 +33,11 @@ actions:
         auto_login:
           login_prompt: "login:"
           username: root
-        failure_retry: 2
 
     - test:
-        failure_retry: 3
         name: dispatcher-python3-watchdog
         timeout:
-          minutes: 5
+          minutes: 10
         definitions:
             - repository: http://git.linaro.org/lava-team/refactoring.git
               from: git
