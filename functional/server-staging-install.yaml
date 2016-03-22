@@ -22,7 +22,8 @@ actions:
     images: 
         rootfs: 
           image_arg: -drive format=raw,file={rootfs}
-          url: http://snapshots.linaro.org/components/lava/standard/debian/jessie/amd64/4/large-stable.img.gz
+          url: http://snapshots.linaro.org/components/lava/standard/debian/jessie/amd64/5/large-stable.img.gz
+          sha256sum: 93baecd50a96d084ce2cb7e1e3b74c4e7582c4691a91b1edcb065db4d43885ff
           compression: gz
     os: debian
     root_partition: 1
