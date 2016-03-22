@@ -75,5 +75,10 @@ md5sum ${NAME}-nfs.tar.gz > ${NAME}-nfs.tar.gz.md5sum.txt
 sha256sum ${NAME}-nfs.tar.gz > ${NAME}-nfs.tar.gz.sha256sum.txt
 md5sum modules.tar.gz > modules.tar.gz.md5sum.txt
 sha256sum modules.tar.gz > modules.tar.gz.sha256sum.txt
-md5sum dtbs/* > dtbs.md5sum.txt
-sha256sum dtbs/* > dtbs.sha256sum.txt
+echo > dtbs.md5sum.txt
+echo > dtbs.sha256sum.txt
+for file in `find dtbs -type f`
+do
+  md5sum ${file} >> dtbs.md5sum.txt
+  sha256sum ${file} >> dtbs.sha256sum.txt
+done
