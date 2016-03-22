@@ -27,6 +27,7 @@ install:
         - telnet
         - python3-netifaces
         - python3-requests
+        - python3-configobj
         - python3-testscenarios
         - u-boot-tools
         - nfs-kernel-server
