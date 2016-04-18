@@ -48,6 +48,7 @@ actions:
           description: "Install staging directly onto jessie base"
         run:
           steps:
+          - apt -q update
           - apt -y install postgresql
           - wget http://images.validation.linaro.org/staging-repo/staging-repo.key.asc
           - apt-key add staging-repo.key.asc
