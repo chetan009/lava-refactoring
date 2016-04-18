@@ -1,10 +1,10 @@
-# Standard Jessie amd64 JOB definition for QEMU
+# Standard Jessie amd64 python3 watchdog test
 device_type: qemu
 job_name: dispatcher-python3
 
 timeouts:
   job:
-    minutes: 15
+    hours: 1
   action:
     minutes: 2
 priority: medium
@@ -37,9 +37,9 @@ actions:
     - test:
         name: dispatcher-python3-watchdog
         timeout:
-          minutes: 10
+          minutes: 45
         definitions:
-            - repository: http://git.linaro.org/lava-team/refactoring.git
-              from: git
-              path: functional/dispatcher-pipeline-python3.yaml
-              name: unit-tests-python3
+         - repository: http://git.linaro.org/lava-team/refactoring.git
+           from: git
+           path: functional/dispatcher-pipeline-python3.yaml
+           name: unit-tests-python3
