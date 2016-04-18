@@ -1,12 +1,12 @@
 device_type: qemu
-job_name: qemu-dispatcher-pipeline
+job_name: qemu-server-pipeline
 timeouts:
   job:
     hours: 1
   action:
     minutes: 5
   connection:
-    minutes: 2
+    minutes: 1
 priority: medium
 visibility: public
 context:
@@ -21,16 +21,14 @@ actions:
         images: 
             rootfs: 
               image_arg: -drive format=raw,file={rootfs}
-              url: http://snapshots.linaro.org/components/lava/standard/debian/jessie/amd64/5/large-stable.img.gz
-              sha256sum: 93baecd50a96d084ce2cb7e1e3b74c4e7582c4691a91b1edcb065db4d43885ff
+              url: http://snapshots.linaro.org/components/lava/standard/debian/sid/amd64/7/large-sid.img.gz
+              sha256sum: 42f4a314a6e5748edf42a46afe2bb519584d9d00942614992c670bce61e9b21f
               compression: gz
         os: debian
         root_partition: 1
 
     - boot:
         method: qemu
-        timeout:
-          minutes: 2
         media: tmpfs
         prompts: ["root@debian:"]
         auto_login:
@@ -38,11 +36,11 @@ actions:
           username: root
 
     - test:
-        name: dispatcher-pipeline-unittests
+        name: qemu-server-pipeline
         timeout:
-          minutes: 30
+          minutes: 45
         definitions:
             - repository: http://git.linaro.org/lava-team/refactoring.git
               from: git
-              path: functional/dispatcher-pipeline-unit-tests.yaml
-              name: dispatcher-pipeline-unittests
+              path: functional/server-pipeline-unit-tests-sid.yaml
+              name: server-pipeline-unittests
