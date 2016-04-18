@@ -42,6 +42,7 @@ install:
         - python3-urllib3
         - openssh-client
         - ca-certificates
+        - locales
         - android-tools-adb
         - android-tools-fastboot
 
@@ -52,7 +53,7 @@ run:
         - git config --global user.email "lava@lava.net"
         - git clone http://git.linaro.org/lava/lava-dispatcher.git
         - cd lava-dispatcher
-        - git fetch https://review.linaro.org/lava/lava-dispatcher refs/changes/35/9935/6 && git cherry-pick FETCH_HEAD
+        - git fetch https://review.linaro.org/lava/lava-dispatcher refs/changes/35/9935/8 && git cherry-pick FETCH_HEAD
         - LC_ALL=C.UTF-8 python3 -m unittest discover -v lava_dispatcher.pipeline
 
 parse:
