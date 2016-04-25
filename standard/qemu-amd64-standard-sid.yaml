@@ -27,7 +27,8 @@ actions:
     images: 
         rootfs: 
           image_arg: -drive format=raw,file={rootfs}
-          url: http://snapshots.linaro.org/components/lava/standard/debian/sid/amd64/7/large-sid.img.gz
+          # url: http://snapshots.linaro.org/components/lava/standard/debian/sid/amd64/7/large-sid.img.gz
+          url: https://images.validation.linaro.org/kvm/standard/large-sid-7.img.gz
           sha256sum: 42f4a314a6e5748edf42a46afe2bb519584d9d00942614992c670bce61e9b21f
           compression: gz
     os: debian
