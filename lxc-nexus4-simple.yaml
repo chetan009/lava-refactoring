@@ -1,19 +1,25 @@
-device_type: nexus4
-job_name: nexus4-android
-
+device_type: lxc-droid
+job_name: lxc-droid-testing
 timeouts:
   job:
-    minutes: 60
-  action:
     minutes: 15
+  action:
+    minutes: 5
 priority: medium
-visibility: public
+
+protocols:
+  lava-lxc:
+    name: lxc-droid-test
+    distribution: debian
+    release: sid
+    arch: amd64
 
 actions:
 - deploy:
     timeout:
-      minutes: 15
+      minutes: 5
     to: fastboot
+    namespace: droid
     images:
       boot:
         url: http://people.linaro.org/~senthil.kumaran/nexus4-userdebug/boot.img
@@ -23,18 +29,36 @@ actions:
         url: http://people.linaro.org/~senthil.kumaran/nexus4-userdebug/system.img
     os: android
 
+- deploy:
+    namespace: tlxc
+    timeout:
+      minutes: 5
+    to: lxc
+    os: debian
+
 - boot:
+    namespace: droid
     prompts:
     - 'shell@mako'
     timeout:
       minutes: 15
     method: fastboot
 
-- test:
+- boot:
+    namespace: tlxc
+    prompts:
+    - 'root@lxc-droid-test:/#'
     timeout:
       minutes: 5
+    method: lxc
+
+- test:
+    namespace: tlxc
+    timeout:
+      minutes: 5
+    connection: lxc
     definitions:
     - repository: git://git.linaro.org/people/senthil.kumaran/test-definitions.git
       from: git
-      path: android/echo-pass-fail-error-test.yaml
-      name: echo-pass-fail-error-test
+      path: android/get-adb-serial.yaml
+      name: get-adb-serial
