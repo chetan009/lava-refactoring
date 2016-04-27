@@ -24,7 +24,7 @@ actions:
 
 - boot:
     prompts:
-    - 'root@pipeline-lxc-test:/#'
+    - 'root@(.*):/#'
     timeout:
       minutes: 5
     method: lxc

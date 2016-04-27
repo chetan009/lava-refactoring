@@ -47,7 +47,7 @@ actions:
 - boot:
     namespace: tlxc
     prompts:
-    - 'root@lxc-droid-test:/#'
+    - 'root@(.*):/#'
     timeout:
       minutes: 5
     method: lxc
