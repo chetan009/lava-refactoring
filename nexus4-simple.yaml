@@ -1,5 +1,5 @@
-device_type: lxc-droid
-job_name: lxc-droid-testing
+device_type: nexus4
+job_name: lxc-nexus4-testing
 timeouts:
   job:
     minutes: 15
@@ -9,7 +9,7 @@ priority: medium
 
 protocols:
   lava-lxc:
-    name: lxc-droid-test
+    name: lxc-nexus4-test
     distribution: debian
     release: sid
     arch: amd64
