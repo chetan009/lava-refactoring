@@ -38,6 +38,7 @@ install:
         - python-nose
         - python-zmq
         - python-configobj
+        - python-guestfs
         - android-tools-adb
         - android-tools-fastboot
 
