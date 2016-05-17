@@ -50,6 +50,6 @@ run:
         - git log -n1
         - ../functional/version-wrapper.py
         - lava-test-case pep8 --shell pep8 --ignore E501 .
-        - ../functional/unittests.sh
+        - lava-test-case unittests --shell ../functional/unittests.sh
         - ../functional/fixme-report.sh
         - ../functional/pylint.sh "lava_dispatcher/pipeline"
