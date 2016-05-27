@@ -8,6 +8,10 @@ timeouts:
 priority: medium
 visibility: public
 
+metadata:
+  source: https://git.linaro.org/lava-team/refactoring.git
+  path: hi6220-hikey.yaml
+
 actions:
 - deploy:
     timeout:

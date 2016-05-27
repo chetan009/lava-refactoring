@@ -8,6 +8,10 @@ timeouts:
   action:
     minutes: 5
 
+metadata:
+  source: https://git.linaro.org/lava-team/refactoring.git
+  path: cubietruck-ramdisk.yaml
+
 actions:
 - deploy:
     dtb:

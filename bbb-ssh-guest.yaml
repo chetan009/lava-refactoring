@@ -16,6 +16,10 @@ timeouts:
 priority: medium
 visibility: public
 
+metadata:
+  source: https://git.linaro.org/lava-team/refactoring.git
+  path: bbb-ssh-guest.yaml
+
 protocols:
   lava-multinode:
     # expect_role is used by the dispatcher and is part of delay_start

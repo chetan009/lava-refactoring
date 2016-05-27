@@ -10,6 +10,10 @@ timeouts:
   connection:
     minutes: 2
 
+metadata:
+  source: https://git.linaro.org/lava-team/refactoring.git
+  path: panda-multinode.yaml
+
 protocols:
   lava-multinode:
     roles:

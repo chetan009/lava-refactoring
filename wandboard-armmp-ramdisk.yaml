@@ -9,6 +9,10 @@ timeouts:
 priority: medium
 visibility: public
 
+metadata:
+  source: https://git.linaro.org/lava-team/refactoring.git
+  path: wandboard-armmp-ramdisk.yaml
+
 actions:
 - deploy:
      timeout:

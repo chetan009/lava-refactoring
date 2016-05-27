@@ -14,6 +14,10 @@ visibility: public
 
 priority: medium
 
+metadata:
+  source: https://git.linaro.org/lava-team/refactoring.git
+  path: bbb-multinode-vland.yaml
+
 protocols:
  lava-multinode:
    roles:

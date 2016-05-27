@@ -11,6 +11,10 @@ timeouts:
 priority: medium
 visibility: public
 
+metadata:
+  source: https://git.linaro.org/lava-team/refactoring.git
+  path: ipxe.yaml
+
 actions:
 - deploy:
     timeout:

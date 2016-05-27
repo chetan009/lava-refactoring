@@ -9,6 +9,10 @@ timeouts:
 priority: medium
 visibility: public
 
+metadata:
+  source: https://git.linaro.org/lava-team/refactoring.git
+  path: cubietruck-usb.yaml
+
 actions:
     # secondary media - use the first deploy to get to a system which can deploy the next
     # in testing, assumed to already be deployed

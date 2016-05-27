@@ -7,6 +7,10 @@ timeouts:
     minutes: 5
 priority: medium
 
+metadata:
+  source: https://git.linaro.org/lava-team/refactoring.git
+  path: nexus4-simple.yaml
+
 protocols:
   lava-lxc:
     name: lxc-nexus4-test
