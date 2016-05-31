@@ -14,39 +14,21 @@ metadata:
 protocols:
   lava-lxc:
     name: lxc-nexus4-test
+    template: debian
     distribution: debian
     release: sid
     arch: amd64
 
 actions:
 - deploy:
-    timeout:
-      minutes: 5
-    to: fastboot
-    namespace: droid
-    images:
-      boot:
-        url: http://people.linaro.org/~senthil.kumaran/nexus4-userdebug/boot.img
-      userdata:
-        url: http://people.linaro.org/~senthil.kumaran/nexus4-userdebug/userdata.img
-      system:
-        url: http://people.linaro.org/~senthil.kumaran/nexus4-userdebug/system.img
-    os: android
-
-- deploy:
     namespace: tlxc
     timeout:
       minutes: 5
     to: lxc
+    packages:
+    - android-tools-adb
+    - android-tools-fastboot
     os: debian
-
-- boot:
-    namespace: droid
-    prompts:
-    - 'shell@mako'
-    timeout:
-      minutes: 15
-    method: fastboot
 
 - boot:
     namespace: tlxc
@@ -56,6 +38,29 @@ actions:
       minutes: 5
     method: lxc
 
+- deploy:
+    timeout:
+      minutes: 5
+    to: fastboot
+    namespace: droid
+    connection: lxc
+    images:
+      boot:
+        url: http://people.linaro.org/~senthil.kumaran/nexus4-userdebug/boot.img
+      userdata:
+        url: http://people.linaro.org/~senthil.kumaran/nexus4-userdebug/userdata.img
+      system:
+        url: http://people.linaro.org/~senthil.kumaran/nexus4-userdebug/system.img
+    os: debian
+
+- boot:
+    namespace: droid
+    prompts:
+    - 'root@(.*):/#'
+    timeout:
+      minutes: 15
+    method: fastboot
+
 - test:
     namespace: tlxc
     timeout:
@@ -64,5 +69,5 @@ actions:
     definitions:
     - repository: git://git.linaro.org/people/senthil.kumaran/test-definitions.git
       from: git
-      path: android/get-adb-serial.yaml
+      path: debian/get-adb-serial.yaml
       name: get-adb-serial
