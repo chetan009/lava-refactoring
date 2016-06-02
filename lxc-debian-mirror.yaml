@@ -25,7 +25,7 @@ protocols:
 actions:
 - deploy:
     timeout:
-      minutes: 5
+      minutes: 30
     to: lxc
     os: debian
 
