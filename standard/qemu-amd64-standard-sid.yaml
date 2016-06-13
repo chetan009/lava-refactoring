@@ -8,7 +8,7 @@ job_name: qemu-amd64-standard-sid
 
 timeouts:
   job:
-    minutes: 10
+    minutes: 30
   action:
     minutes: 2
   connection:
@@ -34,7 +34,8 @@ actions:
     images: 
         rootfs: 
           image_arg: -drive format=raw,file={rootfs}
-          url: https://images.validation.linaro.org/kvm/standard/large-sid-7.img.gz
+          # to improve performance with a transparent proxy, use http, not https
+          url: http://images.validation.linaro.org/kvm/standard/large-sid-7.img.gz
           sha256sum: 42f4a314a6e5748edf42a46afe2bb519584d9d00942614992c670bce61e9b21f
           compression: gz
     os: debian
@@ -43,6 +44,8 @@ actions:
 - boot:
     method: qemu
     media: tmpfs
+    timeout:
+      minutes: 2
     prompts:
     - "root@debian:"
     auto_login:
@@ -51,7 +54,7 @@ actions:
 
 - test:
     timeout:
-      minutes: 9
+      minutes: 20
     definitions:
     - repository:
         metadata:

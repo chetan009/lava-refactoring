@@ -7,6 +7,8 @@ timeouts:
     minutes: 5
   action:
     minutes: 2
+  connection:
+    minutes: 2
 priority: medium
 visibility: public
 
@@ -37,6 +39,8 @@ actions:
 - boot:
     method: qemu
     media: tmpfs
+    timeout:
+      minutes: 2
     prompts:
     - "root@debian:"
     auto_login:
