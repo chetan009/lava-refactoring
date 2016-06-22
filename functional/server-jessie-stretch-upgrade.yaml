@@ -48,9 +48,10 @@ actions:
           description: "Install jessie base and upgrade to staging"
         run:
           steps:
-          - apt -y install postgresql
+          - apt -q update
+          - lava-test-case postgres --shell apt -y install postgresql
           - DEBIAN_FRONTEND=noninteractive apt-get -y install lava-dispatcher lava-server
-          - dpkg -l lava-server
+          - dpkg-query -W lava-server
           - lava-test-case ensite --shell a2ensite lava-server
           - a2dissite 000-default
           - apache2ctl restart
@@ -58,7 +59,9 @@ actions:
           - wget http://images.validation.linaro.org/staging-repo/staging-repo.key.asc
           - apt-key add staging-repo.key.asc
           - echo "deb http://images.validation.linaro.org/staging-repo sid main" > /etc/apt/sources.list.d/lava-staging.list
+          - echo "deb http://mirror.bytemark.co.uk/debian jessie-backports main" > /etc/apt/sources.list.d/lava-backports.list
           - apt -q update
+          - apt -q -y -t jessie-backports install python-django-kvstore python-django python-django-tables2
           - apt -y upgrade
           - apt -y dist-upgrade
           # once helpers are available, add a device type, device & device dictionary here
@@ -67,7 +70,8 @@ actions:
           - lava-test-case server --shell service lava-server status
           - lava-test-case master --shell service lava-master status
           - lava-test-case slave --shell service lava-slave status
-          - dpkg -l lava-server
+          - lava-server manage migrate --no-color
+          - dpkg-query -W lava-server
       from: inline
       name: stretch-upgrade-inline
       path: inline/stretch-upgrade.yaml
