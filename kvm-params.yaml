@@ -1,0 +1,52 @@
+device_type: qemu
+job_name: qemu, Debian wheezy with parameters
+
+timeouts:
+  job:
+    minutes: 15
+  action:
+    minutes: 5
+priority: medium
+visibility: public
+context:
+  arch: amd64
+
+metadata:
+  source: https://git.linaro.org/lava-team/refactoring.git
+  path: kvm-simple.yaml
+
+actions:
+- deploy:
+    timeout:
+      minutes: 5
+    to: tmpfs
+    images:
+        rootfs:
+          image_arg: -drive format=raw,file={rootfs}
+          url: http://images.validation.linaro.org/kvm-debian-wheezy.img.gz
+          compression: gz
+    os: debian
+    root_partition: 1
+
+- boot:
+    method: qemu
+    media: tmpfs
+    prompts:
+    - "root@debian:"
+
+- test:
+    timeout:
+      # uses install:deps, so takes longer than singlenode01
+      minutes: 5
+    definitions:
+    - repository: http://git.linaro.org/lava-team/lava-functional-tests.git
+      from: git
+      path: lava-test-shell/params/params.yaml
+      name: parse-params
+      parameters:
+        VARIABLE_NAME_1: "first variable value"
+        VARIABLE_NAME_2: "second value"
+    - from: git
+      repository: http://git.linaro.org/lava-team/lava-functional-tests.git
+      path: lava-test-shell/single-node/singlenode03.yaml
+      name: singlenode-advanced
