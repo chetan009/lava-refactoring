@@ -29,7 +29,6 @@ install:
         - python-django
         - python-django-south
         - python-django-tables2
-        - python-django-auth-openid
         - python-django-restricted-resource
         - python-pygments
         - python-simplejson
