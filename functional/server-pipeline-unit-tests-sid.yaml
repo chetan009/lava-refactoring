@@ -52,6 +52,10 @@ run:
         # fix up the hosts file before installing apache
         # need to have an image with backports enabled.
         - echo 127.0.0.1   localhost `hostname` >> /etc/hosts
+        # setup staging-repo to get updated packages for lava-dispatcher
+        - wget -O staging-repo.key.asc http://images.validation.linaro.org/staging-repo/staging-repo.key.asc
+        - apt-key add staging-repo.key.asc
+        - echo "deb http://images.validation.linaro.org/staging-repo sid main" > /etc/apt/sources.list.d/staging-repo.list
         - lava-test-case uwsgi --shell apt -y install apache2 libapache2-mod-wsgi libapache2-mod-uwsgi
         - apt -q update
         - apt -q -y install python-django-kvstore
