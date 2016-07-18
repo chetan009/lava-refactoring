@@ -57,7 +57,7 @@ cp ${BIN_FMT} ${TARGET}/usr/bin/
 chroot ${TARGET}/ debootstrap/debootstrap --second-stage
 chroot ${TARGET}/ passwd root -d
 chroot ${TARGET}/ apt -q update
-chroot ${TARGET}/ apt -y -q install linux-image-${ARCH}
+chroot ${TARGET}/ apt -y -q install whiptail linux-image-${ARCH}
 mv ${TARGET}/boot/* .
 mv ${TARGET}/usr/lib/linux-image-* .
 mv linux-image-* dtbs
