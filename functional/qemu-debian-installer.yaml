@@ -2,10 +2,10 @@
 
 device_type: qemu
 
-job_name: jessie-amd64
+job_name: Debian installer jessie on amd64
 timeouts:
   job:
-    minutes: 30
+    minutes: 45
   action:
     minutes: 10
   test:
@@ -50,7 +50,7 @@ actions:
     method: qemu-iso
     media: img
     timeout:
-      minutes: 20
+      minutes: 30
     connection: serial
     auto_login: {login_prompt: 'login:', username: root, password_prompt: 'Password:', password: root}
     prompts:

@@ -1,5 +1,5 @@
 device_type: qemu
-job_name: qemu-dispatcher-pipeline
+job_name: qemu lava-dispatcher pipeline unit tests
 timeouts:
   job:
     hours: 1
@@ -11,6 +11,10 @@ priority: medium
 visibility: public
 context:
   arch: amd64
+
+metadata:
+  source: https://git.linaro.org/lava-team/refactoring.git
+  path: standard/qemu-dispatcher-pipeline.yaml
 
 actions:
 
