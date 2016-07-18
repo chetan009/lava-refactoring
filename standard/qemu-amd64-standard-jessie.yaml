@@ -1,6 +1,6 @@
 # Standard Jessie amd64 JOB definition for QEMU
 device_type: qemu
-job_name: qemu-amd64-standard-jessie
+job_name: qemu amd64 standard build, Debian Jessie
 
 timeouts:
   job:
