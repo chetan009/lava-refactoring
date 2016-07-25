@@ -1,0 +1,53 @@
+device_type: gru
+
+job_name: gru-nfs
+timeouts:
+  job:
+    minutes: 20
+  action:
+    minutes: 10
+  connection:
+    minutes: 5
+priority: medium
+visibility: public
+
+metadata:
+  source: https://github.com/Yaaaaao/lava-refactoring
+  path: gru-nfs.yaml
+
+actions:
+- deploy:
+    timeout:
+      minutes: 8
+    to: tftp
+    kernel:
+      url: /home/hua/lava/bili/images/uImage
+    nfsrootfs:
+      url: /home/hua/lava/bili/images/targetfs.tar.gz
+      compression: gz
+    os: oe
+    dtb:
+      url: /home/hua/lava/bili/images/dra7-g5-r1.dtb
+
+- boot:
+    method: u-boot
+    commands: nfs
+    type: bootm
+    auto_login:
+      login_prompt: 'login:'
+      username: root
+      password_prompt: 'Password:'
+      password: os17
+    prompts:
+    - 'root@dra7xx-g5-r1:'
+    timeout:
+      minutes: 5
+
+- test:
+    timeout:
+      minutes: 5
+    definitions:
+    - repository: https://github.com/Yaaaaao/lava-test-definitions
+      from: git
+      path: openembedded/smoke-tests-gru.yaml
+      name: smoke-tests
